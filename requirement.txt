@@ -1,0 +1,47 @@
+danh sách tính năng:
+1. màn hình tạo mới danh mục todo (vd: working)
+2. màn hình tạo todo (vd: cv-ngay-thu-2)
+3. màn hình tạo todo item (vd: len cty, ngoi vo lam, lam)
+4 màn hình show danh mục todo
+4.1 màn hình show danh mục todo item
+4.2 màn hình show danh mục todo item detail (checklist)
+5. từng todo item sẽ có checkbox để tích hoàn thành
+6. thời gian hết hạn của từng item trong todo
+7. lưu trữ dài hạn nếu người dùng tích checkbox là remember
+trên mỗi todo hoặc trên danh mục todo (localstorage)
+(optional) lưu data lên firebase
+
+
+
+design data model:
+2 cách:
+1. 1 global object (1 object bự lưu hết data)
+{
+    todoCatagory: [
+        {
+            todoItem: [
+                {isChecked, name, ngayHetHan}
+            ]
+        }
+    ]
+}
+
+2. phân ra nhiều object nhỏ
+todoCatagory: type Object
+    id: type Date + Math.random(100000)
+    name: String
+
+todo: type Object
+    id: type Date + Math.random(100000)
+    name: String
+    todoCatagoryId: reference type id type Date + Math.random(100000)
+    checkList: [checkListItem]
+
+checkListItem: type Object
+    id: type Date + Math.random(100000)
+    name: String
+    dueDate: Date
+    todoId: reference type id type Date + Math.random(100000)
+    isCheck: boolean
+
+n hình tạo todo (vd: cv-ngay-thu-2)
