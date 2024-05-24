@@ -1,35 +1,147 @@
+
 danh sách tính năng:
-1. màn hình tạo mới danh mục todo (vd: working)
-2. màn hình tạo todo (vd: cv-ngay-thu-2)
-3. màn hình tạo todo item (vd: len cty, ngoi vo lam, lam)
-4 màn hình show danh mục todo
-4.1 màn hình show danh mục todo item
-4.2 màn hình show danh mục todo item detail (checklist)
+
+1. màn hình tạo mới category (vd: working)
+
+ -> 1. tạo danh mục category
+    2. lưu danh mục category
+
+2. màn hình tạo sub-category (vd: cv-ngay-thu-2)
+ -> 1. load các danh mục sub-category
+    2. tạo mới sub-category dựa trên category mà user chọn (lấy data từ user nhập, lưu trữ data đó  vào localstorage ()
+
+
+3. màn hình tạo todo list  (vd: len cty, ngoi vo lam, lam)
+ -> 1. tạo mới tên của todo list
+
+
+3.1 màn hình tạo chelist item trong todo list 
+ -> 1. load các danh sách checckklist item thuộc về todo list đó của sub-category mà user chọn từ trước
+  2. tạo mới check list item trong todo list đó của sub-category mà user chọn từ trước (lưu trữ)
+ 
+
+4. màn hình show category
+  -> 1. load danh sách category
+
+4.1 màn hình show sub-category
+  -> 1. load các danh mục sub-category
+4.2 màn hình show todo list 
+     -> 1. load các danh sách checklist item thuộc về todo list đó của sub-category mà user chọn từ trước
+
+
 5. từng todo item sẽ có checkbox để tích hoàn thành
+ -> 1. lưu được trạng thái của check list item đó đã hoàn thành hay chưa vào todo list 
+ đó của sub-category mà user chọn từ trước
+
 6. thời gian hết hạn của từng item trong todo
+ ->  1. viết hàm kiểm tra và đổi  trạng thái của check list item đó đã hoàn thành hay chưa vào todo list 
+ đó của sub-category mà user chọn từ trước dựa trên thông tin ngày hết hạn của check list item đó
+
 7. lưu trữ dài hạn nếu người dùng tích checkbox là remember
 trên mỗi todo hoặc trên danh mục todo (localstorage)
 (optional) lưu data lên firebase
 
 
+domain:
+
+ category
+  thêm, xem, sửa, xóa  (C.R.U.D- CREATE - READ - UPDATE - DELETE)
+sub-category:
+  thêm, xem, sửa, xóa  (C.R.U.D- CREATE - READ - UPDATE - DELETE)
+todo list
+  thêm, xem, sửa, xóa  (C.R.U.D- CREATE - READ - UPDATE - DELETE)
+check list item:
+  thêm, xem, sửa, xóa  (C.R.U.D- CREATE - READ - UPDATE - DELETE)
+
+
+
 
 design data model:
+1. xác định thực thể cần có thông tin gì
+   Entiy - Category:
+   - name: String (UNIQUE)
+   
+   Entity - SubCategory:
+   - name: String (UNIQUE)
+   - categoryName: String (reference: Category)
+
+    Entity - Todo:
+    - name: String (UNIQUE)
+    - subCategoryName (reference: SubCategory)
+
+    Entity - TodoItem:
+    - id: String (UNIQUE)
+    - title: String 
+    - isChecked: boolean
+    - dueDate: Date
+    - createdDate: Date
+    - todoName: String (reference: Todo)
+
+// mỗi item là 1 Category entity
+const Categorys = []
+ - tạo mới 1 catagory:
+   1. tạo 1 đối tượng catagory -> {name: "root"}
+   2. push đối tượng catagory vào danh sách Categorys để lưu trữ dài hạn
+   3. lưu cứng vào localstorage để trữ dài hạn
+
+// mỗi item là 1 SubCategory entity
+const SubCategorys = []
+
+// mỗi item là 1 Todo entity
+const Todos = []
+
+// mỗi item là 1 TodoItem entity
+const TodoItems = []
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 2 cách:
 1. 1 global object (1 object bự lưu hết data)
 {
-    todoCatagory: [
+    category: [
         {
-            todoItem: [
-                {isChecked, name, ngayHetHan}
+            name: 'sub',
+            todoList: [
+                {
+                    nameTodo: "todo",
+                    checkList: [
+                        {
+                            dueDate: Date
+
+                        }
+                    ]
+                }
             ]
         }
     ]
 }
+=> nếu data phình quá lớn máy tính ko đủ chổ chửa
 
-2. phân ra nhiều object nhỏ
-todoCatagory: type Object
+
+2. phân tán ra nhiều object nhỏ
+
+category: type Object
     id: type Date + Math.random(100000)
     name: String
+
+subCategory
+
 
 todo: type Object
     id: type Date + Math.random(100000)
