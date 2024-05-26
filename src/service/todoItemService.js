@@ -1,86 +1,77 @@
-import { WEB_CONFIG } from "../constants/config.js";
+import { WEB_CONFIG } from "../constants/config.js"
 
-function getAllCategory() {
-  const categoryArrayStr = localStorage.getItem(WEB_CONFIG.STORAGE.STORAGE_KEY.CATEGORY);
-  let categoryArray = [];
+const TodoItemSchema = {
+  id: '',
+  title: '',
+  isChecked: false,
+  todoName: '',
+  createdDate: '',
+  dueDate: ''
+}
 
-  if (categoryArrayStr) {
-    categoryArray = JSON.parse(categoryArrayStr);
+// READ 
+function getAllTodoItem() {
+  const todoItemArrayStr = localStorage.getItem(WEB_CONFIG.STORAGE.STORAGE_KEY.TODO_ITEM);
+  return todoItemArrayStr ? JSON.parse(todoItemArrayStr) : [];
+}
+
+function getAllTodoItemByTodoName(todoName) {
+  const todoItems = getAllTodoItem();
+  return todoItems.filter(todoItem => todoItem.todoName === todoName);
+}
+
+// CREATE
+function createTodoItem(title, dueDate, todoName) {
+  let newTodoItemObject = {
+    ...TodoItemSchema,
+    title,
+    dueDate,
+    todoName,
+    id: new Date().getTime() + Math.random() * 100000,
+    createdDate: new Date().toISOString()
+    }
+
+  const todoItems = getAllTodoItem();
+  todoItems.push(newTodoItemObject);
+  localStorage.setItem(WEB_CONFIG.STORAGE.STORAGE_KEY.TODO_ITEM, JSON.stringify(todoItems));
+  return newTodoItemObject;
+}
+
+// UPDATE
+function updateTodoItem(updateTodoItemObject) {
+  const todoItems = getAllTodoItem();
+  const index = todoItems.findIndex(todoItem => todoItem.id === updateTodoItemObject.id);
+  const errorMsg = ''
+  if (index !== -1) {
+    todoItems[index] = { ...todoItems[index],
+        title: updateTodoItemObject.title,
+        isChecked: updateTodoItemObject.isChecked,
+        dueDate: updateTodoItemObject.dueDate
+     };
+    localStorage.setItem(WEB_CONFIG.STORAGE.STORAGE_KEY.TODO_ITEM, JSON.stringify(todoItems));
+    return todoItems[index];
   }
 
-  return categoryArray;
+  return errorMsg === '' ? null : errorMsg; // or handle the case where the category doesn't exist
 }
 
-function getCategoryByName(name) {
-  const categoryArrayStr = localStorage.getItem(WEB_CONFIG.STORAGE.STORAGE_KEY.CATEGORY);
-  let categoryArray = [];
-
-  if (categoryArrayStr) {
-    categoryArray = JSON.parse(categoryArrayStr);
-  }
-
-  const matchedCategory = categoryArray.find(item => item.name === name);
-  return matchedCategory;
+// DELETE
+function deleteTodoItemByTodoName(todoName) {
+  const todoItems = getAllTodoItem();
+  const filteredTodoItemByTodoName = todoItems.filter(todoItem => todoItem.todoName === todoName);
+  localStorage.setItem(WEB_CONFIG.STORAGE.STORAGE_KEY.TODO_ITEM, JSON.stringify(filteredTodoItemByTodoName));
 }
 
-function createCategory(newCategoryObject = null) {
-  const categoryArrayStr = localStorage.getItem(WEB_CONFIG.STORAGE.STORAGE_KEY.CATEGORY);
-  let categoryArray = [];
-
-  if (categoryArrayStr) {
-    categoryArray = JSON.parse(categoryArrayStr);
-  }
-
-  categoryArray.push(newCategoryObject);
-
-  localStorage.setItem(WEB_CONFIG.STORAGE.STORAGE_KEY.CATEGORY, JSON.stringify(categoryArray));
-
-  return newCategoryObject;
+function deleteAllTodo() {
+  localStorage.removeItem(WEB_CONFIG.STORAGE.STORAGE_KEY.TODO);
 }
 
-function updateCategory(updateCategoryObject) {
-  const categoryArrayStr = localStorage.getItem(WEB_CONFIG.STORAGE.STORAGE_KEY.CATEGORY);
-  let categoryArray = [];
-
-  if (categoryArrayStr) {
-    categoryArray = JSON.parse(categoryArrayStr);
-  }
-
-  const existedCategoryObjectIndex = categoryArray.findIndex(category =>
-    category.name === updateCategoryObject.name);
-
-  const existedCategoryObject = categoryArray[existedCategoryObjectIndex];
-
-  const updatedObj = { ...existedCategoryObject, ...updateCategoryObject };
-
-  categoryArray[existedCategoryObjectIndex] = updatedObj;
-
-  localStorage.setItem(WEB_CONFIG.STORAGE.STORAGE_KEY.CATEGORY, JSON.stringify(categoryArray));
-
-  return updatedObj;
+const todoItemService = {
+  getAllTodoItemByTodoName,
+  createTodoItem,
+  updateTodoItem,
+  deleteTodoItemByTodoName,
+  deleteAllTodo
 }
 
-function deleteCategoryByName(name) {
-  // Implementation needed
-}
-
-function deleteAllCategory() {
-  // Implementation needed
-}
-
-function isCategoryExistInStorage() {
-  // Implementation needed
-}
-
-const categoryService = {
-  getAllCategory,
-  getCategoryByName,
-  createCategory,
-  updateCategory,
-  deleteCategoryByName,
-  deleteAllCategory,
-};
-
-export { categoryService };
-
-categoryService.is
+export { todoItemService }

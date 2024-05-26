@@ -1,5 +1,10 @@
 import { WEB_CONFIG } from "../constants/config.js"
 
+
+const CategorySchema = {
+  name: ''
+}
+
 // READ 
 function getAllCategory() {
   const categoryArrayStr = localStorage.getItem(WEB_CONFIG.STORAGE.STORAGE_KEY.CATEGORY);
@@ -12,7 +17,12 @@ function getCategoryByName(name) {
 }
 
 // CREATE
-function createCategory(newCategoryObject = {}) {
+function createCategory(name) {
+  let newCategoryObject = {
+    ...CategorySchema,
+    name
+  }
+
   const categories = getAllCategory();
   categories.push(newCategoryObject);
   localStorage.setItem(WEB_CONFIG.STORAGE.STORAGE_KEY.CATEGORY, JSON.stringify(categories));
@@ -23,14 +33,14 @@ function createCategory(newCategoryObject = {}) {
 function updateCategory(updateCategoryObject) {
   const categories = getAllCategory();
   const index = categories.findIndex(category => category.name === updateCategoryObject.name);
-
+  const errorMsg = ''
   if (index !== -1) {
-    categories[index] = {...categories[index], ...updateCategoryObject};
+    categories[index] = { ...categories[index], ...updateCategoryObject };
     localStorage.setItem(WEB_CONFIG.STORAGE.STORAGE_KEY.CATEGORY, JSON.stringify(categories));
     return categories[index];
   }
 
-  return null; // or handle the case where the category doesn't exist
+  return errorMsg === '' ? null : errorMsg; // or handle the case where the category doesn't exist
 }
 
 // DELETE
@@ -45,12 +55,11 @@ function deleteAllCategory() {
 }
 
 const categoryService = {
-  getAllCategory,
   getCategoryByName,
   createCategory,
   updateCategory,
   deleteCategoryByName,
-  deleteAllCategory,
+  deleteAllCategory
 }
 
 export { categoryService }
