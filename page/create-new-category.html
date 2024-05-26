@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="module">
+        import { loadHtmlUtil } from '../src/util/loadHtml.js'
+        import { header } from '../src/component/header.js'
+        // Dùng để load bootstrap file tự động không cần copy paste 
+        loadHtmlUtil.loadDefaultBootstrapsCss()
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
+            loadHtmlUtil.render(header.selector, header.html, { name: 'hello' })
+        })
+    </script>
+</head>
+
+<body>
+    <header id="header-section">
+    </header>
+
+    <div>
+        create new category page
+    </div>
+</body>
+
+</html>
