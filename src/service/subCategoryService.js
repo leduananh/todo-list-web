@@ -60,13 +60,26 @@ function deleteAllSubCategory() {
   localStorage.removeItem(WEB_CONFIG.STORAGE.STORAGE_KEY.SUB_CATEGORY);
 }
 
+function isSubCategoryNameAlreadyExistInSubCategoryList(subCategoryName) {
+  const subCategories = getAllSubCategory()
+  let isAlreadyExist = false;
+  for (let subCategory of subCategories) {    
+    if (subCategory.name === subCategoryName) {
+      isAlreadyExist = true;
+      break;
+    }
+  }
+  return isAlreadyExist
+}
+
 const subCategoryService = {
   getSubCategoryByName,
   getAllSubCategoryByCategoryName,
   createSubCategory,
   updateSubCategory,
   deleteSubCategoryByName,
-  deleteAllSubCategory
+  deleteAllSubCategory,
+  isSubCategoryNameAlreadyExistInSubCategoryList
 }
 
 export { subCategoryService }

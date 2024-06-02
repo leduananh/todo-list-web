@@ -23,8 +23,41 @@
     </header>
 
     <div>
-        create new category page
+        <h1>Trang tạo mới danh mục - category</h1>
     </div>
+
+    <div style="padding: 10px">
+        <label>Tao mới category</label>
+        <input id="cat-input" type="text" />
+        <button id="cat-add-btn" type="button">tạo</button>
+    </div>
+
+
+    <script type="module">
+        import { categoryService } from '../src/service/categoryService.js'
+
+        const createNewCatBtn = document.querySelector('#cat-add-btn')
+
+        createNewCatBtn.addEventListener('click', function () {
+            const createNewCatInput = document.querySelector('#cat-input')
+            const newCatName = createNewCatInput.value
+
+            if (newCatName === '' || newCatName === undefined || newCatName === null) {
+                alert('Tên sub category không được để trống')
+                return
+            }
+            
+            if (categoryService.isCategoryNameAlreadyExistInCategoryList(newCatName)) {
+                alert('tên danh mục: ' + newCatName + ' đã tồn tại')
+                return
+            }
+
+            categoryService.createCategory(newCatName)
+
+            alert('tạo thành công category: ' + newCatName)
+        })
+    
+    </script>
 </body>
 
 </html>

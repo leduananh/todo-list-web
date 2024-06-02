@@ -1,10 +1,10 @@
 const WEB_CONFIG = {
     STORAGE: {
         STORAGE_KEY: {
-            CATEGORY: 'asdasdasd',
-            SUB_CATEGORY: 'FFFFFFFFFFFFFFFFFFFFF',
-            TODO_ITEM: 'ZZZZZZZZZZZ',
-            TODO: 'XXXXXXXXXXXXXX'
+            CATEGORY: 'CATEGORY',
+            SUB_CATEGORY: 'SUB_CATEGORY',
+            TODO_ITEM: 'TODO_ITEM',
+            TODO: 'TODO'
         }
     }
 }

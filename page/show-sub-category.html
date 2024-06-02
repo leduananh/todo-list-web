@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1 id="show-sub"></h1>
+    <script type="module">
+        import { subCategoryService } from '../src/service/subCategoryService.js'
+        import { categoryService } from '../src/service/categoryService.js'
+        import { commonUtil } from '../src/util/common.js'
+
+        window.categoryService = categoryService
+        window.subCategoryService = subCategoryService
+        window.commonUtil = commonUtil
+
+        let params = new URL(document.location.toString()).searchParams;
+        let categoryName = params.get('categoryName')
+        let listSubCat = subCategoryService.getAllSubCategoryByCategoryName(categoryName)
+        document.querySelector('#show-sub').innerHTML = `${JSON.stringify(listSubCat)}`
+    </script>
+</body>
+
+</html>

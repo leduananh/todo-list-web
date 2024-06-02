@@ -54,12 +54,33 @@ function deleteAllCategory() {
   localStorage.removeItem(WEB_CONFIG.STORAGE.STORAGE_KEY.CATEGORY);
 }
 
+function isCategoriesEmpty() {
+  const categories = getAllCategory()
+  return categories.length === 0;
+}
+
+function isCategoryNameAlreadyExistInCategoryList(categoryName) {
+  const categories = getAllCategory()
+  let isAlreadyExist = false;
+  for (let category of categories) {
+    if (category.name === categoryName) {
+      isAlreadyExist = true;
+      break;
+    }
+  }
+
+  return isAlreadyExist
+}
+
 const categoryService = {
+  getAllCategory,
   getCategoryByName,
   createCategory,
   updateCategory,
   deleteCategoryByName,
-  deleteAllCategory
+  deleteAllCategory,
+  isCategoryNameAlreadyExistInCategoryList,
+  isCategoriesEmpty
 }
 
 export { categoryService }
