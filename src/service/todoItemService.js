@@ -1,4 +1,5 @@
 import { WEB_CONFIG } from "../constants/config.js"
+import { capSID } from "../util/TaoSID.js"
 
 const TodoItemSchema = {
   id: '',
@@ -27,7 +28,7 @@ function createTodoItem(title, dueDate, todoName) {
     title,
     dueDate,
     todoName,
-    id: new Date().getTime() + Math.random() * 100000,
+    id: capSID()
     createdDate: new Date().toISOString()
     }
 
