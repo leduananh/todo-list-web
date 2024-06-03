@@ -37,9 +37,19 @@
 
         const ListTodoItem = todoItemService.getAllTodoItemByTodoName(TodoName)
 
-        
-        let listSubCat = subCategoryService.getAllSubCategoryByCategoryName(categoryName)
-        document.querySelector('#show-sub').innerHTML = `${JSON.stringify(listSubCat)}`
+        document.addEventListener('DOMContentLoaded', function (e) {
+            const categoryItemHtmlStringTemplate = `
+                    <ul>
+                        <span>  Tên Todo: <b>$todoName$ </b> </span>
+                        <li> Tiêu đề: </li>
+                        <li> checkbox </li>
+                        <li> Ngày tạo </li>
+                        <li> ngày hết hạn </li>
+                    </ul>
+                        
+
+        // let listSubCat = subCategoryService.getAllSubCategoryByCategoryName(categoryName)
+        // document.querySelector('#show-sub').innerHTML = `${JSON.stringify(listSubCat)}`
     </script>
 </body>
 
