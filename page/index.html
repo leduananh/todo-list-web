@@ -1,52 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TODO-LIST</title>
     <script type="module">
-        import { loadHtmlUtil } from '../src/util/loadHtml.js'
-        import { header } from '../src/component/header.js'
-        // Dùng để load bootstrap file tự động không cần copy paste 
-        loadHtmlUtil.loadDefaultBootstrapsCss()
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
-            loadHtmlUtil.render(header.selector, header.html, {})
-        })
-    </script>
-</head>
+      import { loadHtmlUtil } from "../src/util/loadHtml.js";
+      import { header } from "../src/component/header.js";
+      // Dùng để load bootstrap file tự động không cần copy paste
+      loadHtmlUtil.loadDefaultBootstrapsCss();
 
-<body>
-    <header class="header">
-        <a href="/page/index.html" class="logo">CompanyLogo</a>
-        <div class="header-right a-tag-nav">
-            <a class="active" href="/page/show-category.html ">Show category</a>
-        </div>
-        <div class="header-right a-tag-nav">
-            <a class="active" href="/page/create-new-category.html ">Create category</a>
-        </div>
-    <script type="module">
-        
+      document.addEventListener("DOMContentLoaded", () => {
+        // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
+        loadHtmlUtil.render(header.selector, header.html, {});
+      });
     </script>
-        
-    </header>
+  </head>
+  <body>
+    <header id="header-section"></header>
 
-    <header id="header-section">
-    </header>
-    
     <main>
-
-        <div class="row justify-content-around align-items-center" style="padding: 200px 20px;">
-            <div class="col-2 text-center btn btn-warning nutThucHien">Tạo mới danh mục công việc</div>
-            <div class="col-2 text-center btn btn-warning nutThucHien">Tạo công việc</div>
-            <div class="col-2 text-center btn btn-warning nutThucHien">Tạo check list cho công việc</div>
+      <div
+        class="row justify-content-around align-items-center"
+        style="padding: 200px 20px"
+      >
+        <div class="col-2 text-center btn btn-warning nutThucHien">
+          Tạo mới danh mục công việc
         </div>
-        <div class="row justify-content-center">
-            <div class="col-3 btn text-center btn-warning nutThucHien">Trạng thái công việc</div>
+        <div class="col-2 text-center btn btn-warning nutThucHien">
+          Tạo công việc
         </div>
+        <div class="col-2 text-center btn btn-warning nutThucHien">
+          Tạo check list cho công việc
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-3 btn text-center btn-warning nutThucHien">
+          Trạng thái công việc
+        </div>
+      </div>
     </main>
-</body>
-
+  </body>
 </html>
