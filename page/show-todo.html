@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    
+
+        <div>
+            <h1> <b id='show-category'></b>/<b id='show-subcategory'></b>/<b> Các công việc</b></h1>
+        </div>
+        <div style="padding: 20px;">
+            <ul id="danh-muc-todo"></ul>
+        </div>
+    
+    <script type="module">
+        import { subCategoryService } from '../src/service/subCategoryService.js'
+        import { categoryService } from '../src/service/categoryService.js'
+        import { commonUtil } from '../src/util/common.js'
+        import {paramsTemplateMappingUtil } from '../src/util/paramsTemplateMapping.js'
+        import { todoService } from '../scr/service/todoService.js'
+        
+        window.categoryService = categoryService
+        window.subCategoryService = subCategoryService
+        window.commonUtil = commonUtil
+
+        // let params = new URL(document.location.toString()).searchParams;
+        // let categoryName = params.get('categoryName')
+        let SubCategoryName = commonUtil.loadQueryParamValueByQueryName('suCategoryName')
+        let listtodo = todoService.getAllTodoBySubCategoryName(SubCategoryName)
+
+        
+           
+        //tạo hàm RenderHTml===================================================================================
+        document.addEventListener('DOMContentLoaded', function (e){
+           
+            let ct = ''
+            // vòng lặp for of
+            if (listtodo.length > 0) {
+                for (let todo of listtodo) {
+                    const jsonString = encodeURIComponent(JSON.stringify(todo))
+                    let subCategoryItemHtmlStringTemplate = `
+                    <li>
+                        <span>  Tên công việc : </span>
+                        <h1>
+                        $name$
+                        </h1>
+
+                        <span>
+                            <a href="/page/edit-todo.html?TodoName=$name$">edit</a>
+                        </span>
+                        
+                        <span>
+                            <a href="/page/delete-todo.html?TodoName=$name$">delete y</a>
+                        </span>
+                        |
+                        <span>
+                            <a href="/page/create-new-todoitem.html?data=${jsonString}">create todoitem</a>
+                        </span>
+                       
+                        <span>
+                            <a href="/page/show-todoitem.html?data=${jsonString}">show todo item</a>
+                        </span>
+                    </li>
+                `
+                let subCategoryItemHtml = paramsTemplateMappingUtil.replaceVariables(subCategoryItemHtmlStringTemplate, todo)
+                
+                ct = ct + subCategoryItemHtml
+                }
+            }
+            if (listtodo.length === 0) {
+                ct = '<h1>No subcategory</h1>'
+            }       
+                           
+            const ulTag = document.querySelector('#danh-muc-todo');
+
+            ulTag.innerHTML = ct
+
+        })
+ 
+
+
+
+
+       
+        document.querySelector('#show-category').innerText = categoryName
+        
+        
+        
+        //document.querySelector('#show-sub').innerHTML = `${JSON.stringify(listSubCat)}`
+    </script>
+</body>
+
+</html>

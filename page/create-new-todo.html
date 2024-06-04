@@ -9,10 +9,10 @@
     <header id="header-section">
     </header>
     <div>
-        <h1>Trang Tạo Một Nhiệm Vụ Trong Danh Mục Con - ToDo</h1>
+        <h1>Trang Tạo Một Nhiệm Vụ Trong Danh Mục: <b id="show-category"></b></h1>
     </div>
     <div>
-        <span>sub-Category hiện tại: <b id="subCategory-name-show"></b></span>
+        <span>Danh mục con hiện tại: <b id="subCategory-name-show"> </b></span>
     </div>
     <div style="padding: 10px">
         <label>Tao mới ToDo</label>
@@ -27,14 +27,16 @@
 
         const createNewTodoBtn = document.querySelector('#todo-add-btn')
         
-        const subCategoryName = commonUtil.loadQueryParamValueByQueryName('subCategoryName')
+        const LoadSubCategory = commonUtil.loadQueryParamValueByQueryName('data')
+        const SubCategory = JSON.parse(decodeURIComponent(LoadSubCategory))
+        
    
 
         createNewTodoBtn.addEventListener('click', function () {
-            if (categoryService.isCategoriesEmpty()) {
-                alert('Vui tạo mới tên danh mục con : ' + subCategoryName + ' trước khi tạo To Do')
-                return
-            }
+            // if (categoryService.isCategoriesEmpty()) {
+            //     alert('Vui tạo mới tên danh mục con : ' + subCategoryName + ' trước khi tạo To Do')
+            //     return
+            // }
 
             const createNewToDoInput = document.querySelector('#todo-input')
             const newToDoName = createNewToDoInput.value
@@ -54,10 +56,11 @@
 
 
 
-            todoService.createTodo(newToDoName, subCategoryName)
+            todoService.createTodo(newToDoName, SubCategory.name)
             alert('tạo thành công todo: ' + newToDoName)
         })
-        document.querySelector('#subCategory-name-show').innerText = subCategoryName
+        document.querySelector('#subCategory-name-show').innerText = SubCategory.name
+        document.querySelector('#show-category').innerText = SubCategory.categoryName
     //good here
 
 
