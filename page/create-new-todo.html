@@ -11,6 +11,7 @@
     <div>
         <h1>Trang Tạo Một Nhiệm Vụ Trong Danh Mục: <b id="show-category"></b></h1>
     </div>
+    <!--chuẩn bị biểu mẫu để đổ code-->
     <div>
         <span>Danh mục con hiện tại: <b id="subCategory-name-show"> </b></span>
     </div>
@@ -33,10 +34,17 @@
    
 
         createNewTodoBtn.addEventListener('click', function () {
+<<<<<<< HEAD
             // if (categoryService.isCategoriesEmpty()) {
             //     alert('Vui tạo mới tên danh mục con : ' + subCategoryName + ' trước khi tạo To Do')
             //     return
             // }
+=======
+            if (subCategoryService.isSubCategoriesEmpty()) {
+                alert('Vui tạo mới tên danh mục con : ' + subCategoryName + ' trước khi tạo To Do')
+                return
+            }
+>>>>>>> 37c33d6c8fbd5b92933bc4a8143460173e7fead4
 
             const createNewToDoInput = document.querySelector('#todo-input')
             const newToDoName = createNewToDoInput.value
@@ -54,9 +62,13 @@
             }
           
 
+<<<<<<< HEAD
 
 
             todoService.createTodo(newToDoName, SubCategory.name)
+=======
+            todoService.createTodo(newToDoName, subCategoryName)
+>>>>>>> 37c33d6c8fbd5b92933bc4a8143460173e7fead4
             alert('tạo thành công todo: ' + newToDoName)
         })
         document.querySelector('#subCategory-name-show').innerText = SubCategory.name
