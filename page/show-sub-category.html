@@ -31,9 +31,12 @@
 
         let params = new URL(document.location.toString()).searchParams;
         let categoryName = params.get('categoryName')
+        
         let listSubCat = subCategoryService.getAllSubCategoryByCategoryName(categoryName)
 
-        
+        //console.log(listSubCat)
+       
+      
            
         //tạo hàm RenderHTml===================================================================================
         document.addEventListener('DOMContentLoaded', function (e){
@@ -45,19 +48,19 @@
                         </h1>
 
                         <span>
-                            <a href="/page/edit-sub-category.html?suCategoryName=$name$">edit sub category</a>
+                            <a href="/page/edit-sub-category.html?subCategoryName=$name$">edit sub category</a>
                         </span>
                         
                         <span>
-                            <a href="/page/delete-sub-category.html?suCategoryName=$name$">delete sub category</a>
+                            <a href="/page/delete-sub-category.html?subCategoryName=$name$">delete sub category</a>
                         </span>
                         |
                         <span>
-                            <a href="/page/create-new-todo.html?suCategoryName=$name$">create todo</a>
+                            <a href="/page/create-new-todo.html?subCategoryName=$name$">create todo</a>
                         </span>
                        
                         <span>
-                            <a href="/page/show-todo.html?suCategoryName=$name$">show todo</a>
+                            <a href="/page/show-todo.html?subCategoryName=$name$">show todo</a>
                         </span>
                     </li>
                 `

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="show-todo"></h1>
+    
+        <div>
+            <h1>Trang load danh sách todo</h1>
+        </div>
+        <div style="padding: 20px;">
+            <ul id="danh-muc-todo"></ul>
+        </div>
+    <script type="module">
+        
+        import { categoryService } from '../src/service/categoryService.js'
+        import { todoService } from '../src/service/todoService.js'
+        import { commonUtil } from '../src/util/common.js'
+        import { subCategoryService } from '../src/service/subCategoryService.js'
+        import {paramsTemplateMappingUtil } from '../src/util/paramsTemplateMapping.js'
+
+        window.categoryService = categoryService
+        window.subCategoryService = subCategoryService
+        window.todoService = todoService
+        window.commonUtil = commonUtil
+
+
+        let params = new URL(document.location.toString()).searchParams;
+        let subCategoryName = params.get('subCategoryName')
+        
+
+        let listTodo = todoService.getAllTodoBySubCategoryName(subCategoryName)
+       
+
+        document.addEventListener('DOMContentLoaded', function (e){
+            let todoItemHtmlStringTemplate = `
+                    <li>
+                        <span>  tên danh todo : </span>
+                        <h1>
+                        $name$
+                        </h1>
+
+                        <span>
+                            <a href="/page/edit-todo.html?todoName=$name$">edit todo</a>
+                        </span>
+                        
+                        <span>
+                            <a href="/page/delete-todo.html?todoName=$name$">delete todo</a>
+                        </span>
+                        |
+                        <span>
+                            <a href="/page/create-new-todoitem.html?todoName=$name$">create new todo item</a>
+                        </span>
+                       
+                        <span>
+                            <a href="/page/create-new-todoitem.html?todoName=$name$">show todo item</a>
+                        </span>
+                    </li>
+                `
+            let ct = ''
+            // vòng lặp for of
+            if (listTodo.length > 0) {
+                for (let todo of listTodo) {
+                let todoItemHtml = paramsTemplateMappingUtil.replaceVariables(todoItemHtmlStringTemplate, todo)
+                ct = ct + todoItemHtml
+                }
+            }
+            if (listTodo.length === 0) {
+                ct = '<h1>No to do</h1>'
+            }       
+                           
+            const ulTag = document.querySelector('#danh-muc-todo');
+
+            ulTag.innerHTML = ct
+
+        })
+
+        
+
+       
+
+
+
+
+
+
+    </script>
+    
+</body>
+</html>
