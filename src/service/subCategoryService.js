@@ -72,6 +72,32 @@ function isSubCategoryNameAlreadyExistInSubCategoryList(subCategoryName) {
   return isAlreadyExist
 }
 
+
+
+//tạo hàm RenderHTml============
+// tạm thời để đây để nháp - rồi bê vô từng khúc
+function renderSubCategory(listSubCat=[]) {
+  let content ='<ul>'
+  tasks.forEach((task, index) =>{
+      content += `<li>
+              <div class="task-name">${task.name}</div>
+              <a href="#" onclick="editTask(${index})">Sửa</a>
+              <a href="#" onclick= "deleteTask(${index})">Xoá</a>
+          </li>`
+  })
+
+  content +='</ul>'
+  document.querySelector('#result').innerHTML = content
+}
+
+function getTaskFromLocalStrorage() {
+  return localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')): []
+
+}
+
+//==============================
+
+
 const subCategoryService = {
   getSubCategoryByName,
   getAllSubCategoryByCategoryName,
@@ -79,7 +105,8 @@ const subCategoryService = {
   updateSubCategory,
   deleteSubCategoryByName,
   deleteAllSubCategory,
-  isSubCategoryNameAlreadyExistInSubCategoryList
+  isSubCategoryNameAlreadyExistInSubCategoryList,
+  getAllSubCategory
 }
 
 export { subCategoryService }

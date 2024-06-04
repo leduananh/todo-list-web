@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header id="header-section">
+    </header>
+    <div>
+        <h1>Trang Tạo Một Nhiệm Vụ Trong Danh Mục Con - ToDo</h1>
+    </div>
+    <div>
+        <span>sub-Category hiện tại: <b id="subCategory-name-show"></b></span>
+    </div>
+    <div style="padding: 10px">
+        <label>Tao mới ToDo</label>
+        <input id="todo-input" type="text" />
+        <button id="todo-add-btn" type="button">tạo</button>
+    </div>
+    <script type="module">
+        import { todoService } from '../src/service/todoService.js' 
+        import { subCategoryService } from '../src/service/subCategoryService.js'
+        import { commonUtil } from '../src/util/common.js'
+
+
+        const createNewTodoBtn = document.querySelector('#todo-add-btn')
+        
+        const subCategoryName = commonUtil.loadQueryParamValueByQueryName('subCategoryName')
+   
+
+        createNewTodoBtn.addEventListener('click', function () {
+            if (categoryService.isCategoriesEmpty()) {
+                alert('Vui tạo mới tên danh mục con : ' + subCategoryName + ' trước khi tạo To Do')
+                return
+            }
+
+            const createNewToDoInput = document.querySelector('#todo-input')
+            const newToDoName = createNewToDoInput.value
+           
+
+            if (newToDoName === '' || newToDoName === undefined || newToDoName === null) {
+                alert('Tên todo không được để trống')
+                return
+            }
+             
+
+            if (todoService.isTodoNameAlreadyExistInTodoList(newToDoName)) {
+                alert('Tên todo đã tồn tại')
+                return
+            }
+          
+
+
+
+            todoService.createTodo(newToDoName, subCategoryName)
+            alert('tạo thành công todo: ' + newToDoName)
+        })
+        document.querySelector('#subCategory-name-show').innerText = subCategoryName
+    //good here
+
+
+    </script>
+    
+</body>
+</html>

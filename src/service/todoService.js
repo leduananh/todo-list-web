@@ -59,6 +59,21 @@ function deleteTodoByName(name) {
 function deleteAllTodo() {
   localStorage.removeItem(WEB_CONFIG.STORAGE.STORAGE_KEY.TODO);
 }
+//=================== tạo mới hàm
+function isTodoNameAlreadyExistInTodoList(todoName) {
+  const todolist = getAllTodo()
+  let isTodoNameExist = false;
+  for (let todo of todolist) {    
+    if (todolist.name === todoName) {
+      isTodoNameExist = true;
+      break;
+    }
+  }
+  return isTodoNameExist
+}
+
+//==================
+
 
 const todoService = {
   getAllTodoBySubCategoryName,
@@ -66,7 +81,8 @@ const todoService = {
   createTodo,
   updateTodo,
   deleteTodoByName,
-  deleteAllTodo
+  deleteAllTodo,
+  isTodoNameAlreadyExistInTodoList
 }
 
 export { todoService }
