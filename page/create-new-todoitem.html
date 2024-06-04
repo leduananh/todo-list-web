@@ -29,11 +29,11 @@
 
     <div>
         <span> SubCategory hiện tại: <b id="SubCategory-name-show"></b></span>
-        <span> ,Todo hiện tại: <span id = "todo-name-show"></span></span>
+        <span> ,Todo hiện tại: <b id = "todo-name-show"></b></span>
     </div>
 
     <div style="padding: 10px">
-        <label>Tiêu dề</label>
+        <label>Nội dung</label>
         <input id="sub-title-input" type="text" />
         <label>Ngày hạn thực hiện</label>
         <input id="sub-duedate-input" type="date" />
@@ -44,11 +44,11 @@
         import { subCategoryService } from '../src/service/subCategoryService.js'
         import { commonUtil } from '../src/util/common.js'
         import { categoryService } from '../src/service/categoryService.js'
-        import { todoItemService } from '../src/service/todoItemService'
+        import { todoItemService } from '../src/service/todoItemService.js'
 
         const createNewTodoItemBtn = document.querySelector('#sub-todoitem-add-btn')
-        const TodoName = commonUtil.loadQueryParamValueByQueryName('TodoName')
-        const SubName = commonUtil.loadQueryParamValueByQueryName('SubName')
+        let data = commonUtil.loadQueryParamValueByQueryName('data')
+        const objectTodo = JSON.parse(decodeURIComponent(data))
 
         createNewTodoItemBtn.addEventListener('click', function() {
 
@@ -71,12 +71,12 @@
             //     return
             // }
 
-            todoItemService.createTodoItem(createNewTitle,createNewDuedate,TodoName)
-            alert('tạo thành công Item: ' + TodoName)
+            todoItemService.createTodoItem(createNewTitle,createNewDuedate,objectTodo.name)
+            alert('tạo thành công Item: ' + objectTodo.name)
         })
 
-        document.querySelector('#SubCategory-name-show').innerText = SubName
-        document.querySelector('#todo-name-show').innerText = TodoName
+        document.querySelector('#SubCategory-name-show').innerText = objectTodo.subCategoryName
+        document.querySelector('#todo-name-show').innerText = objectTodo.name
     </script>
 </body>
 

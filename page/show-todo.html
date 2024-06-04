@@ -22,7 +22,7 @@
         import { categoryService } from '../src/service/categoryService.js'
         import { commonUtil } from '../src/util/common.js'
         import {paramsTemplateMappingUtil } from '../src/util/paramsTemplateMapping.js'
-        import { todoService } from '../scr/service/todoService.js'
+        import { todoService } from '../src/service/todoService.js'
         
         window.categoryService = categoryService
         window.subCategoryService = subCategoryService
@@ -34,7 +34,7 @@
         let listtodo = todoService.getAllTodoBySubCategoryName(SubCategoryName)
 
         
-           
+
         //tạo hàm RenderHTml===================================================================================
         document.addEventListener('DOMContentLoaded', function (e){
            
@@ -45,17 +45,14 @@
                     const jsonString = encodeURIComponent(JSON.stringify(todo))
                     let subCategoryItemHtmlStringTemplate = `
                     <li>
-                        <span>  Tên công việc : </span>
-                        <h1>
-                        $name$
-                        </h1>
-
+                        <div>  Tên công việc : <b style = "font-size: 20px ">$name$</b> </div>
+                       
                         <span>
                             <a href="/page/edit-todo.html?TodoName=$name$">edit</a>
                         </span>
                         
                         <span>
-                            <a href="/page/delete-todo.html?TodoName=$name$">delete y</a>
+                            <a href="/page/delete-todo.html?TodoName=$name$">delete</a>
                         </span>
                         |
                         <span>
@@ -87,7 +84,7 @@
 
 
        
-        document.querySelector('#show-category').innerText = categoryName
+        document.querySelector('#show-subcategory').innerText = SubCategoryName
         
         
         
