@@ -11,6 +11,7 @@
     <div>
         <h1>Trang Tạo Một Nhiệm Vụ Trong Danh Mục Con - ToDo</h1>
     </div>
+    <!--chuẩn bị biểu mẫu để đổ code-->
     <div>
         <span>sub-Category hiện tại: <b id="subCategory-name-show"></b></span>
     </div>
@@ -31,7 +32,7 @@
    
 
         createNewTodoBtn.addEventListener('click', function () {
-            if (categoryService.isCategoriesEmpty()) {
+            if (subCategoryService.isSubCategoriesEmpty()) {
                 alert('Vui tạo mới tên danh mục con : ' + subCategoryName + ' trước khi tạo To Do')
                 return
             }
@@ -51,8 +52,6 @@
                 return
             }
           
-
-
 
             todoService.createTodo(newToDoName, subCategoryName)
             alert('tạo thành công todo: ' + newToDoName)

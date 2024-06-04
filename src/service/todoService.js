@@ -61,10 +61,10 @@ function deleteAllTodo() {
 }
 //=================== tạo mới hàm
 function isTodoNameAlreadyExistInTodoList(todoName) {
-  const todolist = getAllTodo()
+  const todos = getAllTodo()
   let isTodoNameExist = false;
-  for (let todo of todolist) {    
-    if (todolist.name === todoName) {
+  for (let todo of todos) {    
+    if (todos.name === todoName) {
       isTodoNameExist = true;
       break;
     }
