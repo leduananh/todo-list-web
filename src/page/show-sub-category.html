@@ -19,10 +19,10 @@
         </div>
     
     <script type="module">
-        import { subCategoryService } from '../src/service/subCategoryService.js'
-        import { categoryService } from '../src/service/categoryService.js'
-        import { commonUtil } from '../src/util/common.js'
-        import {paramsTemplateMappingUtil } from '../src/util/paramsTemplateMapping.js'
+        import { subCategoryService } from '../service/subCategoryService.js'
+        import { categoryService } from '../service/categoryService.js'
+        import { commonUtil } from '../util/common.js'
+        import {paramsTemplateMappingUtil } from '../util/paramsTemplateMapping.js'
         
         
         window.categoryService = categoryService
@@ -54,21 +54,21 @@
                         </h1>
 
                         <span>
-                            <a href="/page/edit-sub-category.html?subCategoryName=$name$">edit sub category</a>
+                            <a href="./edit-sub-category.html?subCategoryName=$name$">edit sub category</a>
                         </span>
                         
                         <span>
-                            <a href="/page/delete-sub-category.html?subCategoryName=$name$">delete sub category</a>
+                            <a href="./delete-sub-category.html?subCategoryName=$name$">delete sub category</a>
                         </span>
                         |
                         <span>
 
-                            <a href="/page/create-new-todo.html?data=${jsonString}">create todo</a>
+                            <a href="./create-new-todo.html?data=${jsonString}">create todo</a>
 
                         </span>
                        
                         <span>
-                            <a href="/page/show-todo.html?subCategoryName=$name$">show todo</a>
+                            <a href="./show-todo.html?subCategoryName=$name$">show todo</a>
                         </span>
                     </li>
                 `

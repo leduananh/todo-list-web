@@ -14,11 +14,11 @@
         </div>
     
     <script type="module">
-        import { subCategoryService } from '../src/service/subCategoryService.js'
-        import { categoryService } from '../src/service/categoryService.js'
-        import { commonUtil } from '../src/util/common.js'
-        import {paramsTemplateMappingUtil } from '../src/util/paramsTemplateMapping.js'
-        import { todoService } from '../src/service/todoService.js'
+        import { subCategoryService } from '../service/subCategoryService.js'
+        import { categoryService } from '../service/categoryService.js'
+        import { commonUtil } from '../util/common.js'
+        import {paramsTemplateMappingUtil } from '../util/paramsTemplateMapping.js'
+        import { todoService } from '../service/todoService.js'
 
             window.categoryService = categoryService
             window.subCategoryService = subCategoryService
@@ -41,19 +41,19 @@
                         <div>  Tên công việc : <b style = "font-size: 20px ">$name$</b> </div>
                        
                         <span>
-                            <a href="/page/edit-todo.html?TodoName=$name$">Edit</a>
+                            <a href="./edit-todo.html?TodoName=$name$">Edit</a>
                         </span>
                         
                         <span>
-                            <a href="/page/delete-todo.html?TodoName=$name$">Delete</a>
+                            <a href="./delete-todo.html?TodoName=$name$">Delete</a>
                         </span>
                         |
                         <span>
-                            <a href="/page/create-new-todoitem.html?data=${jsonString}">create todoitem</a>
+                            <a href="./create-new-todoitem.html?data=${jsonString}">create todoitem</a>
                         </span>
                        
                         <span>
-                            <a href="/page/show-todoitem.html?data=${jsonString}">show todo item</a>
+                            <a href="./show-todoitem.html?data=${jsonString}">show todo item</a>
                         </span>
                     </li>
                 `

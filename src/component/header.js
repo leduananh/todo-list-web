@@ -1,11 +1,11 @@
 const html = `
 <header class="header">
-    <a href="/page/index.html" class="logo">CompanyLogo</a>
+    <a href="/index.html" class="logo">CompanyLogo</a>
     <div class="header-right a-tag-nav">
-        <a class="active" href="/page/show-category.html ">Show category</a>
+        <a class="active" href="./show-category.html ">Show category</a>
     </div>
     <div class="header-right a-tag-nav">
-        <a class="active" href="/page/create-new-category.html ">Create category</a>
+        <a class="active" href="./create-new-category.html ">Create category</a>
     </div>
 
     

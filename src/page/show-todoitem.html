@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todoitem</title>
     <script type="module">
-        import { loadHtmlUtil } from '../src/util/loadHtml.js'
-        import { header } from '../src/component/header.js'
+        import { loadHtmlUtil } from '../util/loadHtml.js'
+        import { header } from '../component/header.js'
         // Dùng để load bootstrap file tự động không cần copy paste 
         loadHtmlUtil.loadDefaultBootstrapsCss()
 
@@ -25,11 +25,11 @@
     <ul id="danh-muc-todoitem"></ul>
 
     <script type="module">
-        import { subCategoryService } from '../src/service/subCategoryService.js'
-        import { categoryService } from '../src/service/categoryService.js'
-        import { commonUtil } from '../src/util/common.js'
-        import { todoItemService } from '../src/service/todoItemService.js'
-        import { checkBox } from '../src/util/CheckBox.js'
+        import { subCategoryService } from '../service/subCategoryService.js'
+        import { categoryService } from '../service/categoryService.js'
+        import { commonUtil } from '../util/common.js'
+        import { todoItemService } from '../service/todoItemService.js'
+        import { checkBox } from '../util/CheckBox.js'
 
         window.categoryService = categoryService
         window.subCategoryService = subCategoryService
