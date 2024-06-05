@@ -40,8 +40,8 @@
         const createNewTodoBtn = document.querySelector('#todo-add-btn')
         
 
-        const subCategoryName = commonUtil.loadQueryParamValueByQueryName('subCategoryName')
-
+        const data = commonUtil.loadQueryParamValueByQueryName('data')
+        const subCategory = JSON.parse(decodeURIComponent(data))
         
    
 
@@ -68,10 +68,11 @@
           
 
 
-            todoService.createTodo(newToDoName, subCategoryName)
+            todoService.createTodo(newToDoName, subCategory.name)
             alert('tạo thành công todo: ' + newToDoName )
         })
-        document.querySelector('#subCategory-name-show').innerText = subCategoryName
+        document.querySelector('#subCategory-name-show').innerText = subCategory.name
+        document.querySelector('#show-category').innerText = subCategory.categoryName
 
     </script>
     

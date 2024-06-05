@@ -18,11 +18,14 @@ function saveData() {
     // chạy toàn bộ danh sách id
     for (let id of ids){
     var checkbox = document.getElementById(id);
-    var isChecked = checkbox.checked;
+    if (checkbox === undefined || checkbox === null){
+        continue
+    }
+    var STTChecked = checkbox.checked;
          // tìm object của thẻ checked
      const TodoItemHienTai = LoadTodoItem.find(todoitem => todoitem.id === id)
         //  cập nhập trạng thái checked
-     TodoItemHienTai.isChecked = isChecked
+     TodoItemHienTai.isChecked = STTChecked
     //  luu trang thai checked
     let index = LoadTodoItem.findIndex(Todoitem => Todoitem.id === TodoItemHienTai.id)
         LoadTodoItem[index] = TodoItemHienTai
@@ -38,6 +41,9 @@ function loadData() {
     let ids = LoadTodoItem.map(item => item.id)
     for (let id of ids){
     var checkbox = document.getElementById(id)
+    if (checkbox === undefined || checkbox === null){
+        continue
+    }
     // Lấy dữ liệu từ local storage
     const TodoItemHienTai = LoadTodoItem.find(todoitem => todoitem.id === id)
     var  savedState = TodoItemHienTai.isChecked

@@ -21,7 +21,7 @@
 <body>
     <header id="header-section">
     </header>
-    <span>Danh sách các công việc của: <b id="show-todoname"></b> trong <b id="show-subname"></b>  </span> 
+    <span>Danh sách các công việc của: <b id="show-todoname"></b> trong <b id="show-subname"></b></span>
     <ul id="danh-muc-todoitem"></ul>
 
     <script type="module">
@@ -37,62 +37,67 @@
 
         let data = commonUtil.loadQueryParamValueByQueryName('data')
         const objectTodo = JSON.parse(decodeURIComponent(data))
-       
 
         const ListTodoItem = todoItemService.getAllTodoItemByTodoName(objectTodo.name)
 
         document.addEventListener('DOMContentLoaded', function (e) {
+            // Hàm sửa nội dung được đưa vào phạm vi toàn cục
+            window.SuaNoiDung = function(button) {
+                const targetId = button.getAttribute('data-idnd');
+                const element = document.getElementById(targetId);
+                const newContent = prompt(`Nhập nội dung mới cho ${targetId}:`);
+                if (newContent !== null && newContent.trim() !== '') {
+                    element.innerText = newContent;
+                }
+                const updateTodoItemObject = {title: newContent }
+                todoItemService.updateTodoItem(updateTodoItemObject)
+            }
+
             let ct = ''
-            // vòng lặp for of
+            // Vòng lặp for of
             if (ListTodoItem.length > 0) {
                 for (let Todo of ListTodoItem) {
-            const categoryItemHtmlStringTemplate = `
-                    
-                        <li style="font-size: 20px "> Nội dung: <b style=" color: blue">${Todo.title}</b> </li>
+                    const categoryItemHtmlStringTemplate = `
+                        <li style="font-size: 20px "> Nội dung: <b id="${Todo.id}" style="color: blue">${Todo.title}</b> </li>
+                        <button data-idnd="${Todo.id}" onclick="SuaNoiDung(this)">Sửa nội dung</button>
                         <p>
                         <div> ID: ${Todo.id} </div>
-                        <div> Check box đã hoàn thành:  <input type="checkbox" id="${Todo.id}" class="check"> </div>
+                        <div> Check box đã hoàn thành: <input type="checkbox" id="${Todo.id}" class="check"> </div>
                         <div> Ngày bắt đầu: ${Todo.createdDate} </div>
-                        <div> Ngày hết hạn: ${Todo.dueDate} </div>
+                        <div> Ngày hết hạn: ${Todo.dueDate} <button onclick="SuaDueDate()">Sửa</button></div>
                         </p>
-                      `
+                    `
                     ct = ct + categoryItemHtmlStringTemplate
                 }
                 if (ListTodoItem.length === 0) {
-                ct = '<h1>No subcategory</h1>'}
+                    ct = '<h1>No subcategory</h1>'
+                }
             }
             const ulTag = document.querySelector('#danh-muc-todoitem');
-
             ulTag.innerHTML = ct
-                
+
             var checkboxes = document.querySelectorAll('.check');
-
-                checkboxes.forEach(function(checkbox) {
-                    checkbox.addEventListener('change', function() {
-                        if (this.checked) {
-                            alert(this.nextSibling.textContent.trim() + 'Đã hoàn thành');
-                            checkBox.saveData()
-                        } else {
-                            alert(this.nextSibling.textContent.trim() + 'Chưa hoàn thành');
-                            checkBox.saveData()
-                        }
-                    });
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        alert(this.nextSibling.textContent.trim() + 'Đã hoàn thành');
+                        checkBox.saveData()
+                    } else {
+                        alert(this.nextSibling.textContent.trim() + 'Chưa hoàn thành');
+                        checkBox.saveData()
+                    }
                 });
-                window.onload = function() {
-                    checkBox.loadData()
-                }
+            });
 
-                })
-        document.querySelector('#show-todoname').innerText = objectTodo.name     
-        document.querySelector('#show-subname').innerText = objectTodo.subCategoryName  
-        
-        
-        
+            window.onload = function () {
+                checkBox.loadData()
+            }
+        })
 
-        // let listSubCat = subCategoryService.getAllSubCategoryByCategoryName(categoryName)
-        // document.querySelector('#show-sub').innerHTML = `${JSON.stringify(listSubCat)}`
+        document.querySelector('#show-todoname').innerText = objectTodo.name
+        document.querySelector('#show-subname').innerText = objectTodo.subCategoryName
+
     </script>
-  
 </body>
 
 </html>

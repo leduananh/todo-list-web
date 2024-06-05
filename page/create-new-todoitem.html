@@ -59,7 +59,12 @@
 
             const createNewTitle = document.querySelector('#sub-title-input').value
             const createNewDuedate = document.querySelector('#sub-duedate-input').value
-        
+                //hàm chuyển định dạng ngày
+                function convertDateFormat(dateString) {
+                const [year, month, day] = dateString.split('-');
+                return `${day}/${month}/${year}`;
+                }
+                // 
 
             if (createNewTitle === '' || createNewTitle === undefined || createNewTitle === null) {
                 alert('Tên tiêu đề không được để trống')
@@ -71,7 +76,7 @@
             //     return
             // }
 
-            todoItemService.createTodoItem(createNewTitle,createNewDuedate,objectTodo.name)
+            todoItemService.createTodoItem(createNewTitle,convertDateFormat(createNewDuedate),objectTodo.name)
             alert('tạo thành công Item: ' + objectTodo.name)
         })
 
