@@ -1,32 +1,56 @@
-var checkbox = document.getElementById('myCheckbox');
+// var checkbox = document.getElementById('${Todo.id}');
 
-// Lấy dữ liệu từ local storage khi trang web được tải
-window.onload = function() {
-    loadData();
-};
+// // Lấy dữ liệu từ local storage khi trang web được tải
+// window.onload = function() {
+//     loadData();
+// };
 
-// Lưu trạng thái của checkbox vào local storage khi trạng thái thay đổi
-checkbox.addEventListener('change', function() {
-    saveData();
-});
+// // Lưu trạng thái của checkbox vào local storage khi trạng thái thay đổi
+// checkbox.addEventListener('change', function() {
+//     saveData();
+// });
 
 // Hàm lưu trạng thái của checkbox vào local storage
 function saveData() {
+    const LoadTodoItem = JSON.parse(localStorage.getItem('TODO_ITEM'))
+    //  lập danh sách ID
+    let ids = LoadTodoItem.map(item => item.id)
+    // chạy toàn bộ danh sách id
+    for (let id of ids){
+    var checkbox = document.getElementById(id);
     var isChecked = checkbox.checked;
-    
+         // tìm object của thẻ checked
+     const TodoItemHienTai = LoadTodoItem.find(todoitem => todoitem.id === id)
+        //  cập nhập trạng thái checked
+     TodoItemHienTai.isChecked = isChecked
+    //  luu trang thai checked
+    let index = LoadTodoItem.findIndex(Todoitem => Todoitem.id === TodoItemHienTai.id)
+        LoadTodoItem[index] = TodoItemHienTai
     // Lưu trạng thái của checkbox vào local storage
-    localStorage.setItem('TODO_ITEM', isChecked);
+    localStorage.setItem('TODO_ITEM', JSON.stringify(LoadTodoItem));
+    }
 }
 
 // Hàm tải dữ liệu từ local storage và thiết lập trạng thái của checkbox
 function loadData() {
+    const LoadTodoItem = JSON.parse(localStorage.getItem('TODO_ITEM'))
+    //  lập danh sách ID
+    let ids = LoadTodoItem.map(item => item.id)
+    for (let id of ids){
+    var checkbox = document.getElementById(id)
     // Lấy dữ liệu từ local storage
-    var savedState = localStorage.getItem('checkboxState');
-    
+    const TodoItemHienTai = LoadTodoItem.find(todoitem => todoitem.id === id)
+    var  savedState = TodoItemHienTai.isChecked
     // Nếu dữ liệu tồn tại, thiết lập trạng thái của checkbox dựa trên dữ liệu đó
     if (savedState !== null) {
-        checkbox.checked = savedState === 'true'; // Chuyển đổi từ chuỗi sang boolean
+        checkbox.checked = savedState; // Chuyển đổi từ chuỗi sang boolean
     } else {
         console.log('Không có dữ liệu trong local storage.');
     }
+    }
 }
+const checkBox ={
+    saveData,
+    loadData
+}
+export { checkBox }
