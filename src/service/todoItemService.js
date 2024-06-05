@@ -63,6 +63,12 @@ function deleteTodoItemByTodoName(todoName) {
   const filteredTodoItemByTodoName = todoItems.filter(todoItem => todoItem.todoName === todoName);
   localStorage.setItem(WEB_CONFIG.STORAGE.STORAGE_KEY.TODO_ITEM, JSON.stringify(filteredTodoItemByTodoName));
 }
+ 
+function deleteTodoItemById(id) {
+  const todoItems = getAllTodoItem();
+  const filteredTodoItemById = todoItems.filter(todoItem => todoItem.id !== id );
+  localStorage.setItem(WEB_CONFIG.STORAGE.STORAGE_KEY.TODO_ITEM, JSON.stringify(filteredTodoItemById));
+}
 
 function deleteAllTodo() {
   localStorage.removeItem(WEB_CONFIG.STORAGE.STORAGE_KEY.TODO);
@@ -73,7 +79,8 @@ const todoItemService = {
   createTodoItem,
   updateTodoItem,
   deleteTodoItemByTodoName,
-  deleteAllTodo
+  deleteAllTodo,
+  deleteTodoItemById
 }
 
 export { todoItemService }
