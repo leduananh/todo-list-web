@@ -47,12 +47,38 @@
                 const element = document.getElementById(targetId);
                 const newContent = prompt(`Nhập nội dung mới cho ${targetId}:`);
                 if (newContent !== null && newContent.trim() !== '') {
-                    element.innerText = newContent;
+                    element.textContent = newContent;
                 }
-                const updateTodoItemObject = {title: newContent }
-                todoItemService.updateTodoItem(updateTodoItemObject)
+                const LoadTodoItem = JSON.parse(localStorage.getItem('TODO_ITEM'))
+                const  objitem =LoadTodoItem.find(item => item.id === targetId)
+                objitem.title = newContent
+                let index = LoadTodoItem.findIndex(item => item.id === objitem.id)
+                LoadTodoItem[index]= objitem
+                localStorage.setItem('TODO_ITEM',JSON.stringify(LoadTodoItem))
             }
-
+             // Hàm sửa ngay được đưa vào phạm vi toàn cục
+             window.SuaNgay = function(button) {
+                const targetId = button.getAttribute('data-idnd');
+                const element = document.getElementById(targetId);
+                const newContent = prompt(`Nhập ngày hết hạn mới (dd/mm/yyyy):`);
+                if (newContent !== null && newContent.trim() !== '') {
+                    element.textContent = newContent;
+                }
+                const LoadTodoItem = JSON.parse(localStorage.getItem('TODO_ITEM'))
+                const  objitem =LoadTodoItem.find(item => item.id === targetId.slice(0, -2))
+                objitem.dueDate = newContent
+                let index = LoadTodoItem.findIndex(item => item.id === objitem.id)
+                LoadTodoItem[index]= objitem
+                localStorage.setItem('TODO_ITEM',JSON.stringify(LoadTodoItem))
+            }
+            //  Hàm xoá
+            window.Xoa = function(button){
+                const targetId = button.getAttribute('data-idxoa')
+                const LoadTodoItem = JSON.parse(localStorage.getItem('TODO_ITEM'))
+                const  objitem =LoadTodoItem.filter(item => item.id !== targetId)
+                localStorage.setItem('TODO_ITEM',JSON.stringify(objitem))
+                location.reload()
+            }
             let ct = ''
             // Vòng lặp for of
             if (ListTodoItem.length > 0) {
@@ -64,8 +90,10 @@
                         <div> ID: ${Todo.id} </div>
                         <div> Check box đã hoàn thành: <input type="checkbox" id="${Todo.id}" class="check"> </div>
                         <div> Ngày bắt đầu: ${Todo.createdDate} </div>
-                        <div> Ngày hết hạn: ${Todo.dueDate} <button onclick="SuaDueDate()">Sửa</button></div>
+                        <div> Ngày hết hạn: <b id="${Todo.id}DD">${Todo.dueDate}</b> <button data-idnd="${Todo.id}DD" onclick="SuaNgay(this)">Sửa</button></div>
+                        <button data-idxoa="${Todo.id}"  onclick="Xoa(this)" style= " color: red "> Xoá toàn bộ nội dung</button>
                         </p>
+
                     `
                     ct = ct + categoryItemHtmlStringTemplate
                 }
