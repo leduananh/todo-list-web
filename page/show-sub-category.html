@@ -12,7 +12,7 @@
     <h1 id="show-sub category"></h1>
     
         <div>
-            <h1>Trang load danh sách danh mục con</h1>
+            <h1>Trang load danh sách danh mục con của <b id='show-category'></b></h1>
         </div>
         <div style="padding: 20px;">
             <ul id="danh-muc-con"></ul>
@@ -38,9 +38,15 @@
        
       
            
-        //tạo hàm RenderHTml===================================================================================
+        //tạo hàm RenderHTml=================
         document.addEventListener('DOMContentLoaded', function (e){
-            let subCategoryItemHtmlStringTemplate = `
+           
+            let ct = ''
+            // vòng lặp for of
+            if (listSubCat.length > 0) {
+                for (let subCategory of listSubCat) {
+                    const jsonString = encodeURIComponent(JSON.stringify(subCategory))
+                    let subCategoryItemHtmlStringTemplate = `
                     <li>
                         <span>  tên danh mục con : </span>
                         <h1>
@@ -56,7 +62,9 @@
                         </span>
                         |
                         <span>
+
                             <a href="/page/create-new-todo.html?subCategoryName=$name$">create todo</a>
+
                         </span>
                        
                         <span>
@@ -64,11 +72,8 @@
                         </span>
                     </li>
                 `
-            let ct = ''
-            // vòng lặp for of
-            if (listSubCat.length > 0) {
-                for (let subCategory of listSubCat) {
                 let subCategoryItemHtml = paramsTemplateMappingUtil.replaceVariables(subCategoryItemHtmlStringTemplate, subCategory)
+                
                 ct = ct + subCategoryItemHtml
                 }
             }
@@ -87,7 +92,7 @@
 
 
        
-        
+        document.querySelector('#show-category').innerText = categoryName
         
         
         

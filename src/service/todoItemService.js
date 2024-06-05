@@ -1,5 +1,6 @@
 import { WEB_CONFIG } from "../constants/config.js"
 import { capSID } from "../util/TaoSID.js"
+import { getCurrentDateFormatted } from "../util/dateCreate.js"
 
 const TodoItemSchema = {
   id: '',
@@ -28,8 +29,8 @@ function createTodoItem(title, dueDate, todoName) {
     title,
     dueDate,
     todoName,
-    id: capSID()
-    createdDate: new Date().toISOString()
+    id:capSID(),
+    createdDate:getCurrentDateFormatted()
     }
 
   const todoItems = getAllTodoItem();

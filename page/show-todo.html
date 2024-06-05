@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <h1 id="show-todo"></h1>
     
         <div>
-            <h1>Trang load danh sách todo</h1>
+            <h1>Trang load danh sách todo <b id='show-subcategory'></b></h1>
         </div>
         <div style="padding: 20px;">
             <ul id="danh-muc-todo"></ul>
         </div>
+
     <script type="module">
         
         import { categoryService } from '../src/service/categoryService.js'
@@ -70,24 +73,25 @@
             }
             if (listTodo.length === 0) {
                 ct = '<h1>No to do</h1>'
-            }       
-                           
+            }
+                
+
+
             const ulTag = document.querySelector('#danh-muc-todo');
 
             ulTag.innerHTML = ct
 
         })
-
         
 
-       
 
-
-
-
-
-
+        document.querySelector('#show-subcategory').innerText = subCategoryName
+        
+        
+        
+        
     </script>
-    
 </body>
+
+
 </html>

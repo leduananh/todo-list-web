@@ -21,7 +21,8 @@
 <body>
     <header id="header-section">
     </header>
-    <span>Danh sách các TodoItem của SubCategory: <b id="show-subname"></b></span> 
+    <span>Danh sách các công việc của: <b id="show-todoname"></b> trong <b id="show-subname"></b>  </span> 
+    <ul id="danh-muc-todoitem"></ul>
     <script type="module">
         import { subCategoryService } from '../src/service/subCategoryService.js'
         import { categoryService } from '../src/service/categoryService.js'
@@ -32,25 +33,45 @@
         window.subCategoryService = subCategoryService
         window.commonUtil = commonUtil
 
-        let TodoName = commonUtil.loadQueryParamValueByQueryName('TodoName')
-        let SubName = commonUtil.loadQueryParamValueByQueryName('SubName')
+        let data = commonUtil.loadQueryParamValueByQueryName('data')
+        const objectTodo = JSON.parse(decodeURIComponent(data))
+       
 
-        const ListTodoItem = todoItemService.getAllTodoItemByTodoName(TodoName)
+        const ListTodoItem = todoItemService.getAllTodoItemByTodoName(objectTodo.name)
 
         document.addEventListener('DOMContentLoaded', function (e) {
+            let ct = ''
+            // vòng lặp for of
+            if (ListTodoItem.length > 0) {
+                for (let Todo of ListTodoItem) {
             const categoryItemHtmlStringTemplate = `
-                    <ul>
-                        <span>  Tên Todo: <b>$todoName$ </b> </span>
-                        <li> Tiêu đề: </li>
-                        <li> checkbox </li>
-                        <li> Ngày tạo </li>
-                        <li> ngày hết hạn </li>
-                    </ul>
-                        
+                    
+                        <li style="font-size: 20px "> Nội dung: <b style=" color: blue">${Todo.title}</b> </li>
+                        <p>
+                        <div> ID: ${Todo.id} </div>
+                        <div> Check box đã hoàn thành:  <input type="checkbox" id="${Todo.id}"> </div>
+                        <div> Ngày bắt đầu: ${Todo.createdDate} </div>
+                        <div> Ngày hết hạn: ${Todo.dueDate} </div>
+                        </p>
+                    `
+                    ct = ct + categoryItemHtmlStringTemplate
+                }
+                if (ListTodoItem.length === 0) {
+                ct = '<h1>No subcategory</h1>'}
+            }
+            const ulTag = document.querySelector('#danh-muc-todoitem');
+
+            ulTag.innerHTML = ct
+        })
+        document.querySelector('#show-todoname').innerText = objectTodo.name     
+        document.querySelector('#show-subname').innerText = objectTodo.subCategoryName  
+            
+        
 
         // let listSubCat = subCategoryService.getAllSubCategoryByCategoryName(categoryName)
         // document.querySelector('#show-sub').innerHTML = `${JSON.stringify(listSubCat)}`
     </script>
+   
 </body>
 
 </html>
