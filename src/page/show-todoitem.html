@@ -127,16 +127,11 @@
 
         var checkboxes = document.querySelectorAll(".check");
         checkboxes.forEach(function (checkbox) {
-          checkbox.addEventListener("change", function () {
-            if (this.checked) {
-              alert(this.nextSibling.textContent.trim() + "Đã hoàn thành");
-              checkBox.saveData();
-            } else {
-              alert(this.nextSibling.textContent.trim() + "Chưa hoàn thành");
-              checkBox.saveData();
-            }
-          });
-        });
+            checkbox.addEventListener("change", function () {
+                checkBox.saveData(this.checked);
+            });
+            });
+
 
         window.onload = function () {
           checkBox.loadData();
