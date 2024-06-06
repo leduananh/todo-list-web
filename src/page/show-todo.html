@@ -54,11 +54,6 @@
         import { paramsTemplateMappingUtil } from "../util/paramsTemplateMapping.js";
         import { todoService } from "../service/todoService.js";
 
-        window.categoryService = categoryService;
-        window.subCategoryService = subCategoryService;
-        window.commonUtil = commonUtil;
-        // let params = new URL(document.location.toString()).searchParams;
-        // let categoryName = params.get('categoryName')
         const data = commonUtil.loadQueryParamValueByQueryName("data");
         const subCategory = JSON.parse(decodeURIComponent(data));
 
@@ -82,17 +77,11 @@
                     <li>
                         <div>  Tên công việc : <b style = "font-size: 20px ">$name$</b> </div>
                         
-                        <button data-id="$name$" onclick="deleteItem(this)" >
-                            Delete 
-                        </button>
-                        |
-                        <span>
+                        <div class="btn-group mt-2" role="group">                       
+                            <button class="btn btn-outline-danger" data-id="$name$" onclick="deleteItem(this)" >Delete</button>
                             <a href="./create-new-todoitem.html?data=${jsonString}" class="btn btn-outline-primary">create todoitem</a>
-                        </span>
-                       
-                        <span>
                             <a href="./show-todoitem.html?data=${jsonString}" class="btn btn-outline-primary">show todo item</a>
-                        </span>
+                         </div>
                     </li>
                 `;
                     let subCategoryItemHtml =
