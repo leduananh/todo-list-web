@@ -3,8 +3,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script type="module">
+        import { loadHtmlUtil } from '../util/loadHtml.js'
+        import { header } from '../component/header.js'
+        import { commonUtil } from '../util/common.js'
+        // Dùng để load bootstrap file tự động không cần copy paste 
+        loadHtmlUtil.loadDefaultBootstrapsCss()
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
+            const data = commonUtil.loadQueryParamValueByQueryName('data')
+            const subCategory = JSON.parse(decodeURIComponent(data))
+            const jsonString = encodeURIComponent(JSON.stringify(subCategory))
+            header.html = `
+                    <header class="header">
+                        <a href="/index.html" class="logo">CompanyLogo</a>
+                        <div class="header-right a-tag-nav">
+                            <a class="active" href="./create-new-todo.html?data=${jsonString}">Tạo Todo</a>
+                        </div>
+                        
+                    </header>
+                    `
+            loadHtmlUtil.render(header.selector, header.html,{ })
+        })
+    </script>
 </head>
 <body>
+    <header id="header-section">
+    </header>
     
         <div>
             <h1> <b id='show-category'></b>/<b id='show-subcategory'></b>/<b> Các công việc</b></h1>
@@ -25,8 +51,11 @@
             window.commonUtil = commonUtil
             // let params = new URL(document.location.toString()).searchParams;
             // let categoryName = params.get('categoryName')
-            let SubCategoryName = commonUtil.loadQueryParamValueByQueryName('subCategoryName')
-            let listtodo = todoService.getAllTodoBySubCategoryName(SubCategoryName)
+            const data = commonUtil.loadQueryParamValueByQueryName('data')
+            const subCategory = JSON.parse(decodeURIComponent(data))
+
+
+            let listtodo = todoService.getAllTodoBySubCategoryName(subCategory.name)
                 
 
         document.addEventListener('DOMContentLoaded', function (e){
@@ -73,7 +102,7 @@
      
         
 
-        document.querySelector('#show-subcategory').innerText = SubCategoryName
+        document.querySelector('#show-subcategory').innerText = subCategory.name
 
         
         

@@ -5,10 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script type="module">
+        import { loadHtmlUtil } from '../util/loadHtml.js'
+        import { header } from '../component/header.js'
+        // Dùng để load bootstrap file tự động không cần copy paste 
+        loadHtmlUtil.loadDefaultBootstrapsCss()
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
+        let params = new URL(document.location.toString()).searchParams;
+        let categoryName = params.get('categoryName')
+
+            header.html = `
+                    <header class="header">
+                        <a href="/index.html" class="logo">CompanyLogo</a>
+                        
+                        <div class="header-right a-tag-nav">
+                            <a class="active" href="./create-new-sub-category.html?categoryName=${categoryName} ">Tạo Danh mục con</a>
+                        </div>
+                        
+                        
+                    </header>
+                    `
+            loadHtmlUtil.render(header.selector, header.html, { name: 'hello' })
+        })
+    </script>
 </head>
 
 <body>
-    
+    <header id="header-section">
+    </header>
     <h1 id="show-sub category"></h1>
     
         <div>
@@ -68,7 +94,7 @@
                         </span>
                        
                         <span>
-                            <a href="./show-todo.html?subCategoryName=$name$">show todo</a>
+                            <a href="./show-todo.html?data=${jsonString}">show todo</a>
                         </span>
                     </li>
                 `

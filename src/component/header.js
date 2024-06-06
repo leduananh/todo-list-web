@@ -2,12 +2,12 @@ const html = `
 <header class="header">
     <a href="/index.html" class="logo">CompanyLogo</a>
     <div class="header-right a-tag-nav">
-        <a class="active" href="./show-category.html ">Show category</a>
+        <a class="active" href="./show-category.html ">Danh mục</a>
     </div>
     <div class="header-right a-tag-nav">
-        <a class="active" href="./create-new-category.html ">Create category</a>
+        <a class="active" href="./create-new-category.html ">Tạo Danh mục</a>
     </div>
-
+    
     
 </header>
 `
