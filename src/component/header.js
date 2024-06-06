@@ -1,6 +1,6 @@
 const html = `
 <header class="header">
-    <a href="/index.html" class="logo">CompanyLogo</a>
+    <a href="/index.html" class="logo">MindX</a>
     <div class="header-right a-tag-nav">
         <a class="active" href="./show-category.html ">Danh mục</a>
     </div>
