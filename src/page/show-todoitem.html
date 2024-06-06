@@ -45,12 +45,12 @@
             window.SuaNoiDung = function(button) {
                 const targetId = button.getAttribute('data-idnd');
                 const element = document.getElementById(targetId);
-                const newContent = prompt(`Nhập nội dung mới cho ${targetId}:`);
+                const newContent = prompt(`Nhập nội dung mới cho ${targetId.slice(0, -2)}:`);
                 if (newContent !== null && newContent.trim() !== '') {
                     element.textContent = newContent;
                 }
                 const LoadTodoItem = JSON.parse(localStorage.getItem('TODO_ITEM'))
-                const  objitem =LoadTodoItem.find(item => item.id === targetId)
+                const  objitem =LoadTodoItem.find(item => item.id === targetId.slice(0, -2))
                 objitem.title = newContent
                 let index = LoadTodoItem.findIndex(item => item.id === objitem.id)
                 LoadTodoItem[index]= objitem
@@ -84,8 +84,8 @@
             if (ListTodoItem.length > 0) {
                 for (let Todo of ListTodoItem) {
                     const categoryItemHtmlStringTemplate = `
-                        <li style="font-size: 20px "> Nội dung: <b id="${Todo.id}" style="color: blue">${Todo.title}</b> </li>
-                        <button data-idnd="${Todo.id}" onclick="SuaNoiDung(this)">Sửa nội dung</button>
+                        <li style="font-size: 20px "> Nội dung: <b id="${Todo.id}ND" style="color: blue">${Todo.title}</b> </li>
+                        <button data-idnd="${Todo.id}ND" onclick="SuaNoiDung(this)">Sửa nội dung</button>
                         <p>
                         <div> ID: ${Todo.id} </div>
                         <div> Check box đã hoàn thành: <input type="checkbox" id="${Todo.id}" class="check"> </div>
