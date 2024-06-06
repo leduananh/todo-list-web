@@ -56,17 +56,12 @@
                         <h1>
                         $name$
                         </h1>
-
-                        <button data-id="$name$" onclick="deleteItem(this)" >
-                            Delete 
-                        </button>
-                        |
-                        <span>
+                        <div class="btn-group mt-2" role="group">
+                            <button data-id="$name$" onclick="deleteItem(this)" class="btn btn-outline-danger">
+                            Delete </button>
                             <a href="./create-new-sub-category.html?categoryName=$name$" class="btn btn-outline-success btn-sm">Create Sub Category</a>
-                        </span>
-                        <span>
                             <a href="./show-sub-category.html?categoryName=$name$" class="btn btn-outline-info btn-sm">Show Sub Category</a>
-                        </span>
+                         </div>
                     </p>
                 </a>
             `;
