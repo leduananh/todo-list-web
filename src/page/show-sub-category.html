@@ -66,6 +66,14 @@
 
       //tạo hàm RenderHTml=================
       document.addEventListener("DOMContentLoaded", function (e) {
+         //  Hàm xoá
+         window.deleteItem = function(button){
+                const targetId = button.getAttribute('data-id')
+                const LoadTodoItem = JSON.parse(localStorage.getItem('SUB_CATEGORY'))
+                const  objitem =LoadTodoItem.filter(item => item.name !== targetId)
+                localStorage.setItem('SUB_CATEGORY',JSON.stringify(objitem))
+                location.reload()
+            }
         let ct = "";
         // vòng lặp for of
         if (listSubCat.length > 0) {
@@ -75,13 +83,14 @@
                          <li class="list-group-item">
                         <div>  Tên công việc : <b style="font-size: 20px">$name$</b> </div>
                             <div class="btn-group mt-2" role="group">
-                                <a href="./edit-sub-category.html?subCategoryName=$name$" class="btn btn-outline-primary">Edit</a>
-                                <a href="./delete-sub-category.html?subCategoryName=$name$" class="btn btn-outline-danger">Delete</a>
+                                
+                                <button data-id="$name$" onclick="deleteItem(this)"  class="btn btn-outline-danger">Delete</button>
                                 <a href="./create-new-todo.html?data=${jsonString}" class="btn btn-outline-success">Create Todo</a>
                                 <a href="./show-todo.html?data=${jsonString}" class="btn btn-outline-info">Show Todo</a>
                             </div>
                         </li>
                     `;
+                    
             let subCategoryItemHtml =
               paramsTemplateMappingUtil.replaceVariables(
                 subCategoryItemHtmlStringTemplate,
