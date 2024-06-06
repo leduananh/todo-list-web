@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script type="module">
-        import { loadHtmlUtil } from '../util/loadHtml.js'
-        import { header } from '../component/header.js'
-        import { commonUtil } from '../util/common.js'
-        // Dùng để load bootstrap file tự động không cần copy paste 
-        loadHtmlUtil.loadDefaultBootstrapsCss()
+      import { loadHtmlUtil } from "../util/loadHtml.js";
+      import { header } from "../component/header.js";
+      import { commonUtil } from "../util/common.js";
+      // Dùng để load bootstrap file tự động không cần copy paste
+      loadHtmlUtil.loadDefaultBootstrapsCss();
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
-            const data = commonUtil.loadQueryParamValueByQueryName('data')
-            const listTodo = JSON.parse(decodeURIComponent(data))
-            const jsonString = encodeURIComponent(JSON.stringify(listTodo))
-            header.html = `
+      document.addEventListener("DOMContentLoaded", () => {
+        // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
+        const data = commonUtil.loadQueryParamValueByQueryName("data");
+        const listTodo = JSON.parse(decodeURIComponent(data));
+        const jsonString = encodeURIComponent(JSON.stringify(listTodo));
+        header.html = `
                     <header class="header">
                         <a href="/index.html" class="logo">CompanyLogo</a>
                         <div class="header-right a-tag-nav">
@@ -25,77 +24,96 @@
                         </div>
                         
                     </header>
-                    `
-            loadHtmlUtil.render(header.selector, header.html,{ })
-        })
+                    `;
+        loadHtmlUtil.render(header.selector, header.html, {});
+      });
     </script>
-</head>
+  </head>
 
-<body>
+  <body class="bg-light">
+    <header id="header-section"></header>
 
-    <header id="header-section">
-    </header>
-
-    <div>
-        <h1>Trang tạo mới Todo-item</h1>
+    <div class="container mt-4">
+      <h1>Trang tạo mới Todo-item</h1>
+      <div class="mb-3">
+        <span>SubCategory hiện tại: <b id="SubCategory-name-show"></b></span>
+        <span>, Todo hiện tại: <b id="todo-name-show"></b></span>
+      </div>
+      <div class="row g-3">
+        <div class="col">
+          <label for="sub-title-input" class="form-label">Nội dung</label>
+          <input id="sub-title-input" type="text" class="form-control" />
+        </div>
+        <div class="col">
+          <label for="sub-duedate-input" class="form-label"
+            >Ngày hạn thực hiện</label
+          >
+          <input id="sub-duedate-input" type="date" class="form-control" />
+        </div>
+        <div class="col-auto align-self-end">
+          <button
+            id="sub-todoitem-add-btn"
+            type="button"
+            class="btn btn-primary"
+          >
+            Lưu
+          </button>
+        </div>
+      </div>
     </div>
-
-    <div>
-        <span> SubCategory hiện tại: <b id="SubCategory-name-show"></b></span>
-        <span> ,Todo hiện tại: <b id = "todo-name-show"></b></span>
-    </div>
-
-    <div style="padding: 10px">
-        <label>Nội dung</label>
-        <input id="sub-title-input" type="text" />
-        <label>Ngày hạn thực hiện</label>
-        <input id="sub-duedate-input" type="date" />
-        <button id="sub-todoitem-add-btn" type="button">Lưu</button>
-    </div>
-
     <script type="module">
-        import { subCategoryService } from '../service/subCategoryService.js'
-        import { commonUtil } from '../util/common.js'
-        import { categoryService } from '../service/categoryService.js'
-        import { todoItemService } from '../service/todoItemService.js'
+      import { subCategoryService } from "../service/subCategoryService.js";
+      import { commonUtil } from "../util/common.js";
+      import { categoryService } from "../service/categoryService.js";
+      import { todoItemService } from "../service/todoItemService.js";
 
-        const createNewTodoItemBtn = document.querySelector('#sub-todoitem-add-btn')
-        let data = commonUtil.loadQueryParamValueByQueryName('data')
-        const objectTodo = JSON.parse(decodeURIComponent(data))
+      const createNewTodoItemBtn = document.querySelector(
+        "#sub-todoitem-add-btn"
+      );
+      let data = commonUtil.loadQueryParamValueByQueryName("data");
+      const objectTodo = JSON.parse(decodeURIComponent(data));
 
-        createNewTodoItemBtn.addEventListener('click', function() {
+      createNewTodoItemBtn.addEventListener("click", function () {
+        // if (categoryService.isCategoriesEmpty()) {
+        //     alert('Vui tạo mới tên danh mục: ' + categoryName + ' trước khi tạo sub category')
+        //     return
+        // }
 
-            // if (categoryService.isCategoriesEmpty()) {
-            //     alert('Vui tạo mới tên danh mục: ' + categoryName + ' trước khi tạo sub category')
-            //     return
-            // }
+        const createNewTitle = document.querySelector("#sub-title-input").value;
+        const createNewDuedate =
+          document.querySelector("#sub-duedate-input").value;
+        //hàm chuyển định dạng ngày
+        function convertDateFormat(dateString) {
+          const [year, month, day] = dateString.split("-");
+          return `${day}/${month}/${year}`;
+        }
+        //
 
-            const createNewTitle = document.querySelector('#sub-title-input').value
-            const createNewDuedate = document.querySelector('#sub-duedate-input').value
-                //hàm chuyển định dạng ngày
-                function convertDateFormat(dateString) {
-                const [year, month, day] = dateString.split('-');
-                return `${day}/${month}/${year}`;
-                }
-                // 
+        if (
+          createNewTitle === "" ||
+          createNewTitle === undefined ||
+          createNewTitle === null
+        ) {
+          alert("Tên tiêu đề không được để trống");
+          return;
+        }
 
-            if (createNewTitle === '' || createNewTitle === undefined || createNewTitle === null) {
-                alert('Tên tiêu đề không được để trống')
-                return
-            }
-            
-            // if (subCategoryService.isSubCategoryNameAlreadyExistInSubCategoryList(newSubCatName)) {
-            //     alert('Tên sub category đã tồn tại')
-            //     return
-            // }
+        // if (subCategoryService.isSubCategoryNameAlreadyExistInSubCategoryList(newSubCatName)) {
+        //     alert('Tên sub category đã tồn tại')
+        //     return
+        // }
 
-            todoItemService.createTodoItem(createNewTitle,convertDateFormat(createNewDuedate),objectTodo.name)
-            alert('tạo thành công Item: ' + objectTodo.name)
-        })
+        todoItemService.createTodoItem(
+          createNewTitle,
+          convertDateFormat(createNewDuedate),
+          objectTodo.name
+        );
+        alert("tạo thành công Item: " + objectTodo.name);
+      });
 
-        document.querySelector('#SubCategory-name-show').innerText = objectTodo.subCategoryName
-        document.querySelector('#todo-name-show').innerText = objectTodo.name
+      document.querySelector("#SubCategory-name-show").innerText =
+        objectTodo.subCategoryName;
+      document.querySelector("#todo-name-show").innerText = objectTodo.name;
     </script>
-</body>
-
+  </body>
 </html>

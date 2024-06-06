@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todoitem</title>
     <script type="module">
-        import { loadHtmlUtil } from '../util/loadHtml.js'
-        import { header } from '../component/header.js'
-        import { commonUtil } from '../util/common.js'
-        // Dùng để load bootstrap file tự động không cần copy paste 
-        loadHtmlUtil.loadDefaultBootstrapsCss()
+      import { loadHtmlUtil } from "../util/loadHtml.js";
+      import { header } from "../component/header.js";
+      import { commonUtil } from "../util/common.js";
+      // Dùng để load bootstrap file tự động không cần copy paste
+      loadHtmlUtil.loadDefaultBootstrapsCss();
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
-            const data = commonUtil.loadQueryParamValueByQueryName('data')
-            const subCategory = JSON.parse(decodeURIComponent(data))
-            const jsonString = encodeURIComponent(JSON.stringify(subCategory))
-            header.html = `
+      document.addEventListener("DOMContentLoaded", () => {
+        // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
+        const data = commonUtil.loadQueryParamValueByQueryName("data");
+        const subCategory = JSON.parse(decodeURIComponent(data));
+        const jsonString = encodeURIComponent(JSON.stringify(subCategory));
+        header.html = `
                     <header class="header">
                         <a href="/index.html" class="logo">CompanyLogo</a>
                         <div class="header-right a-tag-nav">
@@ -25,117 +24,128 @@
                         </div>
                         
                     </header>
-                    `
-            loadHtmlUtil.render(header.selector, header.html,{ })
-        })
+                    `;
+        loadHtmlUtil.render(header.selector, header.html, {});
+      });
     </script>
-</head>
+  </head>
 
-<body>
-    <header id="header-section">
-    </header>
-    <span>Danh sách các công việc của: <b id="show-todoname"></b> trong <b id="show-subname"></b></span>
-    <ul id="danh-muc-todoitem"></ul>
+  <body>
+    <header id="header-section"></header>
+    <div class="container mt-4">
+      <span class="mb-2"
+        >Danh sách các công việc của: <b id="show-todoname"></b> trong
+        <b id="show-subname"></b
+      ></span>
+      <ul id="danh-muc-todoitem" class="list-group"></ul>
+    </div>
 
     <script type="module">
-        import { subCategoryService } from '../service/subCategoryService.js'
-        import { categoryService } from '../service/categoryService.js'
-        import { commonUtil } from '../util/common.js'
-        import { todoItemService } from '../service/todoItemService.js'
-        import { checkBox } from '../util/CheckBox.js'
+      import { subCategoryService } from "../service/subCategoryService.js";
+      import { categoryService } from "../service/categoryService.js";
+      import { commonUtil } from "../util/common.js";
+      import { todoItemService } from "../service/todoItemService.js";
+      import { checkBox } from "../util/CheckBox.js";
 
+      let data = commonUtil.loadQueryParamValueByQueryName("data");
+      const objectTodo = JSON.parse(decodeURIComponent(data));
 
-        let data = commonUtil.loadQueryParamValueByQueryName('data')
-        const objectTodo = JSON.parse(decodeURIComponent(data))
+      const ListTodoItem = todoItemService.getAllTodoItemByTodoName(
+        objectTodo.name
+      );
 
-        const ListTodoItem = todoItemService.getAllTodoItemByTodoName(objectTodo.name)
+      document.addEventListener("DOMContentLoaded", function (e) {
+        // Hàm sửa nội dung được đưa vào phạm vi toàn cục
+        window.SuaNoiDung = function (button) {
+          const targetId = button.getAttribute("data-idnd");
+          const element = document.getElementById(targetId);
+          const newContent = prompt(
+            `Nhập nội dung mới cho ${targetId.slice(0, -2)}:`
+          );
+          if (newContent !== null && newContent.trim() !== "") {
+            element.textContent = newContent;
+          }
+          const LoadTodoItem = JSON.parse(localStorage.getItem("TODO_ITEM"));
+          const objitem = LoadTodoItem.find(
+            (item) => item.id === targetId.slice(0, -2)
+          );
+          objitem.title = newContent;
+          let index = LoadTodoItem.findIndex((item) => item.id === objitem.id);
+          LoadTodoItem[index] = objitem;
+          localStorage.setItem("TODO_ITEM", JSON.stringify(LoadTodoItem));
+        };
+        // Hàm sửa ngay được đưa vào phạm vi toàn cục
+        window.SuaNgay = function (button) {
+          const targetId = button.getAttribute("data-idnd");
+          const element = document.getElementById(targetId);
+          const newContent = prompt(`Nhập ngày hết hạn mới (dd/mm/yyyy):`);
+          if (newContent !== null && newContent.trim() !== "") {
+            element.textContent = newContent;
+          }
+          const LoadTodoItem = JSON.parse(localStorage.getItem("TODO_ITEM"));
+          const objitem = LoadTodoItem.find(
+            (item) => item.id === targetId.slice(0, -2)
+          );
+          objitem.dueDate = newContent;
+          let index = LoadTodoItem.findIndex((item) => item.id === objitem.id);
+          LoadTodoItem[index] = objitem;
+          localStorage.setItem("TODO_ITEM", JSON.stringify(LoadTodoItem));
+        };
+        //  Hàm xoá
+        window.Xoa = function (button) {
+          const targetId = button.getAttribute("data-idxoa");
+          const LoadTodoItem = JSON.parse(localStorage.getItem("TODO_ITEM"));
+          const objitem = LoadTodoItem.filter((item) => item.id !== targetId);
+          localStorage.setItem("TODO_ITEM", JSON.stringify(objitem));
+          location.reload();
+        };
+        let ct = "";
+        // Vòng lặp for of
+        if (ListTodoItem.length > 0) {
+          for (let Todo of ListTodoItem) {
+            const categoryItemHtmlStringTemplate = `
+                        <li class="list-group-item">
+                            <div><b>Nội dung:</b> <span id="${Todo.id}ND" style="color: blue">${Todo.title}</span></div>
+                            <button data-idnd="${Todo.id}ND" onclick="SuaNoiDung(this)" class="btn btn-outline-primary">Sửa nội dung</button>
+                            <p>
+                                <div><b>ID:</b> ${Todo.id}</div>
+                                <div><b>Check box đã hoàn thành:</b> <input type="checkbox" id="${Todo.id}" class="check"></div>
+                                <div><b>Ngày bắt đầu:</b> ${Todo.createdDate}</div>
+                                <div><b>Ngày hết hạn:</b> <span id="${Todo.id}DD">${Todo.dueDate}</span> <button data-idnd="${Todo.id}DD" onclick="SuaNgay(this)" class="btn btn-outline-primary">Sửa</button></div>
+                                <button data-idxoa="${Todo.id}"  onclick="Xoa(this)" class="btn btn-outline-danger">Xoá toàn bộ nội dung</button>
+                            </p>
+                        </li>
+                    `;
+            ct = ct + categoryItemHtmlStringTemplate;
+          }
+          if (ListTodoItem.length === 0) {
+            ct = "<h1>No subcategory</h1>";
+          }
+        }
+        const ulTag = document.querySelector("#danh-muc-todoitem");
+        ulTag.innerHTML = ct;
 
-        document.addEventListener('DOMContentLoaded', function (e) {
-            // Hàm sửa nội dung được đưa vào phạm vi toàn cục
-            window.SuaNoiDung = function(button) {
-                const targetId = button.getAttribute('data-idnd');
-                const element = document.getElementById(targetId);
-                const newContent = prompt(`Nhập nội dung mới cho ${targetId.slice(0, -2)}:`);
-                if (newContent !== null && newContent.trim() !== '') {
-                    element.textContent = newContent;
-                }
-                const LoadTodoItem = JSON.parse(localStorage.getItem('TODO_ITEM'))
-                const  objitem =LoadTodoItem.find(item => item.id === targetId.slice(0, -2))
-                objitem.title = newContent
-                let index = LoadTodoItem.findIndex(item => item.id === objitem.id)
-                LoadTodoItem[index]= objitem
-                localStorage.setItem('TODO_ITEM',JSON.stringify(LoadTodoItem))
+        var checkboxes = document.querySelectorAll(".check");
+        checkboxes.forEach(function (checkbox) {
+          checkbox.addEventListener("change", function () {
+            if (this.checked) {
+              alert(this.nextSibling.textContent.trim() + "Đã hoàn thành");
+              checkBox.saveData();
+            } else {
+              alert(this.nextSibling.textContent.trim() + "Chưa hoàn thành");
+              checkBox.saveData();
             }
-             // Hàm sửa ngay được đưa vào phạm vi toàn cục
-             window.SuaNgay = function(button) {
-                const targetId = button.getAttribute('data-idnd');
-                const element = document.getElementById(targetId);
-                const newContent = prompt(`Nhập ngày hết hạn mới (dd/mm/yyyy):`);
-                if (newContent !== null && newContent.trim() !== '') {
-                    element.textContent = newContent;
-                }
-                const LoadTodoItem = JSON.parse(localStorage.getItem('TODO_ITEM'))
-                const  objitem =LoadTodoItem.find(item => item.id === targetId.slice(0, -2))
-                objitem.dueDate = newContent
-                let index = LoadTodoItem.findIndex(item => item.id === objitem.id)
-                LoadTodoItem[index]= objitem
-                localStorage.setItem('TODO_ITEM',JSON.stringify(LoadTodoItem))
-            }
-            //  Hàm xoá
-            window.Xoa = function(button){
-                const targetId = button.getAttribute('data-idxoa')
-                const LoadTodoItem = JSON.parse(localStorage.getItem('TODO_ITEM'))
-                const  objitem =LoadTodoItem.filter(item => item.id !== targetId)
-                localStorage.setItem('TODO_ITEM',JSON.stringify(objitem))
-                location.reload()
-            }
-            let ct = ''
-            // Vòng lặp for of
-            if (ListTodoItem.length > 0) {
-                for (let Todo of ListTodoItem) {
-                    const categoryItemHtmlStringTemplate = `
-                        <li style="font-size: 20px "> Nội dung: <b id="${Todo.id}ND" style="color: blue">${Todo.title}</b> </li>
-                        <button data-idnd="${Todo.id}ND" onclick="SuaNoiDung(this)">Sửa nội dung</button>
-                        <p>
-                        <div> ID: ${Todo.id} </div>
-                        <div> Check box đã hoàn thành: <input type="checkbox" id="${Todo.id}" class="check"> </div>
-                        <div> Ngày bắt đầu: ${Todo.createdDate} </div>
-                        <div> Ngày hết hạn: <b id="${Todo.id}DD">${Todo.dueDate}</b> <button data-idnd="${Todo.id}DD" onclick="SuaNgay(this)">Sửa</button></div>
-                        <button data-idxoa="${Todo.id}"  onclick="Xoa(this)" style= " color: red "> Xoá toàn bộ nội dung</button>
-                        </p>
+          });
+        });
 
-                    `
-                    ct = ct + categoryItemHtmlStringTemplate
-                }
-                if (ListTodoItem.length === 0) {
-                    ct = '<h1>No subcategory</h1>'
-                }
-            }
-            const ulTag = document.querySelector('#danh-muc-todoitem');
-            ulTag.innerHTML = ct
+        window.onload = function () {
+          checkBox.loadData();
+        };
+      });
 
-            var checkboxes = document.querySelectorAll('.check');
-            checkboxes.forEach(function (checkbox) {
-                checkbox.addEventListener('change', function () {
-                    if (this.checked) {
-                        alert(this.nextSibling.textContent.trim() + 'Đã hoàn thành');
-                        checkBox.saveData()
-                    } else {
-                        alert(this.nextSibling.textContent.trim() + 'Chưa hoàn thành');
-                        checkBox.saveData()
-                    }
-                });
-            });
-
-            window.onload = function () {
-                checkBox.loadData()
-            }
-        })
-
-        document.querySelector('#show-todoname').innerText = objectTodo.name
-        document.querySelector('#show-subname').innerText = objectTodo.subCategoryName
-
+      document.querySelector("#show-todoname").innerText = objectTodo.name;
+      document.querySelector("#show-subname").innerText =
+        objectTodo.subCategoryName;
     </script>
-</body>
-
+  </body>
 </html>

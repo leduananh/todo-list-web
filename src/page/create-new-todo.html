@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-        <script type="module">
-            import { loadHtmlUtil } from '../util/loadHtml.js'
-            import { header } from '../component/header.js'
-            import { commonUtil } from '../util/common.js'
-            // Dùng để load bootstrap file tự động không cần copy paste 
-            loadHtmlUtil.loadDefaultBootstrapsCss()
-    
-            document.addEventListener('DOMContentLoaded', () => {
-                // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
-                const data = commonUtil.loadQueryParamValueByQueryName('data')
-                 const subCategory = JSON.parse(decodeURIComponent(data))
-                 const jsonString = encodeURIComponent(JSON.stringify(subCategory))
-                header.html=`
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script type="module">
+      import { loadHtmlUtil } from "../util/loadHtml.js";
+      import { header } from "../component/header.js";
+      import { commonUtil } from "../util/common.js";
+      // Dùng để load bootstrap file tự động không cần copy paste
+      loadHtmlUtil.loadDefaultBootstrapsCss();
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
+        const data = commonUtil.loadQueryParamValueByQueryName("data");
+        const subCategory = JSON.parse(decodeURIComponent(data));
+        const jsonString = encodeURIComponent(JSON.stringify(subCategory));
+        header.html = `
                     <header class="header">
                         <a href="/index.html" class="logo">CompanyLogo</a>
                         <div class="header-right a-tag-nav">
@@ -28,70 +28,79 @@
                         
                         
                     </header>
-                    `
-                loadHtmlUtil.render(header.selector, header.html, { name: 'hello' })
-            })
-        </script>
-    </head>
-<body>
-    <header id="header-section">
-    </header>
-    <div>
-        <h1>Trang Tạo Một Nhiệm Vụ Trong Danh Mục: <b id="show-category"></b></h1>
-    </div>
-    <!--chuẩn bị biểu mẫu để đổ code-->
-    <div>
-        <span>Danh mục con hiện tại: <b id="subCategory-name-show"> </b></span>
-    </div>
-    <div style="padding: 10px">
-        <label>Tao mới ToDo</label>
-        <input id="todo-input" type="text" />
-        <button id="todo-add-btn" type="button">tạo</button>
+                    `;
+        loadHtmlUtil.render(header.selector, header.html, { name: "hello" });
+      });
+    </script>
+  </head>
+  <body class="bg-light">
+    <header id="header-section"></header>
+
+    <div class="container mt-4">
+      <h1>
+        Trang Tạo Một Nhiệm Vụ Trong Danh Mục: <span id="show-category"></span>
+      </h1>
+      <div class="mb-3">
+        <span>Danh mục con hiện tại: <b id="subCategory-name-show"></b></span>
+      </div>
+      <div class="row g-3">
+        <div class="col-auto">
+          <label for="todo-input" class="form-label">Tạo mới ToDo</label>
+        </div>
+        <div class="col-auto">
+          <input id="todo-input" type="text" class="form-control" />
+        </div>
+        <div class="col-auto">
+          <button
+            id="todo-add-btn"
+            type="button"
+            class="btn btn-outline-primary"
+          >
+            Tạo
+          </button>
+        </div>
+      </div>
     </div>
     <script type="module">
-        import { todoService } from '../service/todoService.js' 
-        import { subCategoryService } from '../service/subCategoryService.js'
-        import { commonUtil } from '../util/common.js'
+      import { todoService } from "../service/todoService.js";
+      import { subCategoryService } from "../service/subCategoryService.js";
+      import { commonUtil } from "../util/common.js";
 
+      const createNewTodoBtn = document.querySelector("#todo-add-btn");
 
-        const createNewTodoBtn = document.querySelector('#todo-add-btn')
-        
+      const data = commonUtil.loadQueryParamValueByQueryName("data");
+      const subCategory = JSON.parse(decodeURIComponent(data));
 
-        const data = commonUtil.loadQueryParamValueByQueryName('data')
-        const subCategory = JSON.parse(decodeURIComponent(data))
-        
-   
+      createNewTodoBtn.addEventListener("click", function () {
+        // if (categoryService.isCategoriesEmpty()) {
+        //     alert('Vui tạo mới tên danh mục con : ' + subCategoryName + ' trước khi tạo To Do')
+        //     return
+        // }
 
-        createNewTodoBtn.addEventListener('click', function () {
-            // if (categoryService.isCategoriesEmpty()) {
-            //     alert('Vui tạo mới tên danh mục con : ' + subCategoryName + ' trước khi tạo To Do')
-            //     return
-            // }
+        const createNewToDoInput = document.querySelector("#todo-input");
+        const newToDoName = createNewToDoInput.value;
 
-            const createNewToDoInput = document.querySelector('#todo-input')
-            const newToDoName = createNewToDoInput.value
-           
+        if (
+          newToDoName === "" ||
+          newToDoName === undefined ||
+          newToDoName === null
+        ) {
+          alert("Tên todo không được để trống");
+          return;
+        }
 
-            if (newToDoName === '' || newToDoName === undefined || newToDoName === null) {
-                alert('Tên todo không được để trống')
-                return
-            }
-             
+        if (todoService.isTodoNameAlreadyExistInTodoList(newToDoName)) {
+          alert("Tên todo đã tồn tại");
+          return;
+        }
 
-            if (todoService.isTodoNameAlreadyExistInTodoList(newToDoName)) {
-                alert('Tên todo đã tồn tại')
-                return
-            }
-          
-
-
-            todoService.createTodo(newToDoName, subCategory.name)
-            alert('tạo thành công todo: ' + newToDoName )
-        })
-        document.querySelector('#subCategory-name-show').innerText = subCategory.name
-        document.querySelector('#show-category').innerText = subCategory.categoryName
-
+        todoService.createTodo(newToDoName, subCategory.name);
+        alert("tạo thành công todo: " + newToDoName);
+      });
+      document.querySelector("#subCategory-name-show").innerText =
+        subCategory.name;
+      document.querySelector("#show-category").innerText =
+        subCategory.categoryName;
     </script>
-    
-</body>
+  </body>
 </html>

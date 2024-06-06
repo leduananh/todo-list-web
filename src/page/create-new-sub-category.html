@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script type="module">
-        import { loadHtmlUtil } from '../util/loadHtml.js'
-        import { header } from '../component/header.js'
-        import { commonUtil } from '../util/common.js'
-        // Dùng để load bootstrap file tự động không cần copy paste 
-        loadHtmlUtil.loadDefaultBootstrapsCss()
+      import { loadHtmlUtil } from "../util/loadHtml.js";
+      import { header } from "../component/header.js";
+      import { commonUtil } from "../util/common.js";
+      // Dùng để load bootstrap file tự động không cần copy paste
+      loadHtmlUtil.loadDefaultBootstrapsCss();
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
-            const categoryName = commonUtil.loadQueryParamValueByQueryName('categoryName')
-            header.html = `
+      document.addEventListener("DOMContentLoaded", () => {
+        // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
+        const categoryName =
+          commonUtil.loadQueryParamValueByQueryName("categoryName");
+        header.html = `
                     <header class="header">
                         <a href="/index.html" class="logo">CompanyLogo</a>
                         <div class="header-right a-tag-nav">
@@ -25,65 +25,87 @@
                             <a class="active" href="./show-category.html ">Danh mục</a>
                         </div>
                     </header>
-                    `
-            loadHtmlUtil.render(header.selector, header.html,{})
-        })
+                    `;
+        loadHtmlUtil.render(header.selector, header.html, {});
+      });
     </script>
-</head>
+  </head>
 
-<body>
+  <body class="bg-light">
+    <header id="header-section"></header>
 
-    <header id="header-section">
-    </header>
-
-    <div>
-        <h1>Trang tạo mới danh mục con - sub category</h1>
-    </div>
-
-    <div>
+    <div class="container mt-4">
+      <h1>Trang tạo mới danh mục con - sub category</h1>
+      <div class="mb-3">
         <span>Category hiện tại: <b id="category-name-show"></b></span>
-    </div>
-
-    <div style="padding: 10px">
-        <label>Tao mới sub category</label>
-        <input id="sub-cat-input" type="text" />
-        <button id="sub-cat-add-btn" type="button">tạo</button>
+      </div>
+      <div class="row g-3">
+        <div class="col-auto">
+          <label for="sub-cat-input" class="form-label"
+            >Tạo mới sub category</label
+          >
+        </div>
+        <div class="col-auto">
+          <input id="sub-cat-input" type="text" class="form-control" />
+        </div>
+        <div class="col-auto">
+          <button
+            id="sub-cat-add-btn"
+            type="button"
+            class="btn btn-outline-primary"
+          >
+            Tạo
+          </button>
+        </div>
+      </div>
     </div>
 
     <script type="module">
-        import { subCategoryService } from '../service/subCategoryService.js'
-        import { commonUtil } from '../util/common.js'
-        import { categoryService } from '../service/categoryService.js'
+      import { subCategoryService } from "../service/subCategoryService.js";
+      import { commonUtil } from "../util/common.js";
+      import { categoryService } from "../service/categoryService.js";
 
-        const createNewSubCatBtn = document.querySelector('#sub-cat-add-btn')
+      const createNewSubCatBtn = document.querySelector("#sub-cat-add-btn");
 
-        const categoryName = commonUtil.loadQueryParamValueByQueryName('categoryName')
+      const categoryName =
+        commonUtil.loadQueryParamValueByQueryName("categoryName");
 
-        createNewSubCatBtn.addEventListener('click', function () {
-            if (categoryService.isCategoriesEmpty()) {
-                alert('Vui tạo mới tên danh mục: ' + categoryName + ' trước khi tạo sub category')
-                return
-            }
+      createNewSubCatBtn.addEventListener("click", function () {
+        if (categoryService.isCategoriesEmpty()) {
+          alert(
+            "Vui tạo mới tên danh mục: " +
+              categoryName +
+              " trước khi tạo sub category"
+          );
+          return;
+        }
 
-            const createNewSubCatInput = document.querySelector('#sub-cat-input')
-            const newSubCatName = createNewSubCatInput.value
+        const createNewSubCatInput = document.querySelector("#sub-cat-input");
+        const newSubCatName = createNewSubCatInput.value;
 
-            if (newSubCatName === '' || newSubCatName === undefined || newSubCatName === null) {
-                alert('Tên sub category không được để trống')
-                return
-            }
-            
-            if (subCategoryService.isSubCategoryNameAlreadyExistInSubCategoryList(newSubCatName)) {
-                alert('Tên sub category đã tồn tại')
-                return
-            }
+        if (
+          newSubCatName === "" ||
+          newSubCatName === undefined ||
+          newSubCatName === null
+        ) {
+          alert("Tên sub category không được để trống");
+          return;
+        }
 
-            subCategoryService.createSubCategory(newSubCatName, categoryName)
-            alert('tạo thành công sub-category: ' + newSubCatName)
-        })
+        if (
+          subCategoryService.isSubCategoryNameAlreadyExistInSubCategoryList(
+            newSubCatName
+          )
+        ) {
+          alert("Tên sub category đã tồn tại");
+          return;
+        }
 
-        document.querySelector('#category-name-show').innerText = categoryName
+        subCategoryService.createSubCategory(newSubCatName, categoryName);
+        alert("tạo thành công sub-category: " + newSubCatName);
+      });
+
+      document.querySelector("#category-name-show").innerText = categoryName;
     </script>
-</body>
-
+  </body>
 </html>

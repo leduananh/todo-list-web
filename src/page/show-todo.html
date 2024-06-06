@@ -1,21 +1,21 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script type="module">
-        import { loadHtmlUtil } from '../util/loadHtml.js'
-        import { header } from '../component/header.js'
-        import { commonUtil } from '../util/common.js'
-        // Dùng để load bootstrap file tự động không cần copy paste 
-        loadHtmlUtil.loadDefaultBootstrapsCss()
+      import { loadHtmlUtil } from "../util/loadHtml.js";
+      import { header } from "../component/header.js";
+      import { commonUtil } from "../util/common.js";
+      // Dùng để load bootstrap file tự động không cần copy paste
+      loadHtmlUtil.loadDefaultBootstrapsCss();
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
-            const data = commonUtil.loadQueryParamValueByQueryName('data')
-            const subCategory = JSON.parse(decodeURIComponent(data))
-            const jsonString = encodeURIComponent(JSON.stringify(subCategory))
-            header.html = `
+      document.addEventListener("DOMContentLoaded", () => {
+        // dùng để load những đoạn html bị lặp lại nhiều trang như header, footer
+        const data = commonUtil.loadQueryParamValueByQueryName("data");
+        const subCategory = JSON.parse(decodeURIComponent(data));
+        const jsonString = encodeURIComponent(JSON.stringify(subCategory));
+        header.html = `
                     <header class="header">
                         <a href="/index.html" class="logo">CompanyLogo</a>
                         <div class="header-right a-tag-nav">
@@ -25,93 +25,89 @@
                             <a class="active" href="./show-sub-category.html?categoryName=${subCategory.categoryName}">Danh mục con</a>
                         </div>
                     </header>
-                    `
-            loadHtmlUtil.render(header.selector, header.html,{ })
-        })
+                    `;
+        loadHtmlUtil.render(header.selector, header.html, {});
+      });
     </script>
-</head>
-<body>
-    <header id="header-section">
-    </header>
-    
-        <div>
-            <h1> <b id='show-category'></b>/<b id='show-subcategory'></b>/<b> Các công việc</b></h1>
-        </div>
-        <div style="padding: 20px;">
-            <ul id="danh-muc-todo"></ul>
-        </div>
-    
+  </head>
+  <body class="bg-light">
+    <header id="header-section"></header>
+
+    <div class="container mt-4">
+      <div>
+        <h1>
+          <b id="show-category"></b>/<b id="show-subcategory"></b>/<b>
+            Các công việc</b
+          >
+        </h1>
+      </div>
+      <div style="padding: 20px">
+        <ul id="danh-muc-todo" class="list-group"></ul>
+      </div>
+    </div>
+
     <script type="module">
-        import { subCategoryService } from '../service/subCategoryService.js'
-        import { categoryService } from '../service/categoryService.js'
-        import { commonUtil } from '../util/common.js'
-        import {paramsTemplateMappingUtil } from '../util/paramsTemplateMapping.js'
-        import { todoService } from '../service/todoService.js'
+      import { subCategoryService } from "../service/subCategoryService.js";
+      import { categoryService } from "../service/categoryService.js";
+      import { commonUtil } from "../util/common.js";
+      import { paramsTemplateMappingUtil } from "../util/paramsTemplateMapping.js";
+      import { todoService } from "../service/todoService.js";
 
-            window.categoryService = categoryService
-            window.subCategoryService = subCategoryService
-            window.commonUtil = commonUtil
-            // let params = new URL(document.location.toString()).searchParams;
-            // let categoryName = params.get('categoryName')
-            const data = commonUtil.loadQueryParamValueByQueryName('data')
-            const subCategory = JSON.parse(decodeURIComponent(data))
+      window.categoryService = categoryService;
+      window.subCategoryService = subCategoryService;
+      window.commonUtil = commonUtil;
+      // let params = new URL(document.location.toString()).searchParams;
+      // let categoryName = params.get('categoryName')
+      const data = commonUtil.loadQueryParamValueByQueryName("data");
+      const subCategory = JSON.parse(decodeURIComponent(data));
 
+      let listtodo = todoService.getAllTodoBySubCategoryName(subCategory.name);
 
-            let listtodo = todoService.getAllTodoBySubCategoryName(subCategory.name)
-                
-
-        document.addEventListener('DOMContentLoaded', function (e){
-
-            let ct = ''
-            // vòng lặp for of
-            if (listtodo.length > 0) {
-                for (let todo of listtodo) {
-                    const jsonString = encodeURIComponent(JSON.stringify(todo))
-                    let subCategoryItemHtmlStringTemplate = `
-                    <li>
-                        <div>  Tên công việc : <b style = "font-size: 20px ">$name$</b> </div>
+      document.addEventListener("DOMContentLoaded", function (e) {
+        let ct = "";
+        // vòng lặp for of
+        if (listtodo.length > 0) {
+          for (let todo of listtodo) {
+            const jsonString = encodeURIComponent(JSON.stringify(todo));
+            let subCategoryItemHtmlStringTemplate = `
+                    <li class="list-group-item">
+                        <div>  Tên công việc : <b style="font-size: 20px">$name$</b> </div>
                        
                         <span>
-                            <a href="./edit-todo.html?TodoName=$name$">Edit</a>
+                            <a href="./edit-todo.html?TodoName=$name$" class="btn btn-outline-primary">Edit</a>
                         </span>
                         
                         <span>
-                            <a >Delete</a>
+                            <button class="btn btn-outline-danger">Delete</button>
                         </span>
                         |
                         <span>
-                            <a href="./create-new-todoitem.html?data=${jsonString}">create todoitem</a>
+                            <a href="./create-new-todoitem.html?data=${jsonString}" class="btn btn-outline-primary">create todoitem</a>
                         </span>
                        
                         <span>
-                            <a href="./show-todoitem.html?data=${jsonString}">show todo item</a>
+                            <a href="./show-todoitem.html?data=${jsonString}" class="btn btn-outline-primary">show todo item</a>
                         </span>
                     </li>
-                `
-                let subCategoryItemHtml = paramsTemplateMappingUtil.replaceVariables(subCategoryItemHtmlStringTemplate, todo)
-                
-                ct = ct + subCategoryItemHtml
-                }
-            }
-            if (listtodo.length === 0) {
-                ct = '<h1>No subcategory</h1>'
-            }       
-                           
-            const ulTag = document.querySelector('#danh-muc-todo');
-            ulTag.innerHTML = ct
-        })
+                `;
+            let subCategoryItemHtml =
+              paramsTemplateMappingUtil.replaceVariables(
+                subCategoryItemHtmlStringTemplate,
+                todo
+              );
 
-     
-        
+            ct = ct + subCategoryItemHtml;
+          }
+        }
+        if (listtodo.length === 0) {
+          ct = "<h1>No subcategory</h1>";
+        }
 
-        document.querySelector('#show-subcategory').innerText = subCategory.name
+        const ulTag = document.querySelector("#danh-muc-todo");
+        ulTag.innerHTML = ct;
+      });
 
-        
-        
-        
-        
+      document.querySelector("#show-subcategory").innerText = subCategory.name;
     </script>
-</body>
-
-
+  </body>
 </html>
